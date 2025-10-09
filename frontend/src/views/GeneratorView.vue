@@ -8,7 +8,7 @@
     <Message v-if="healthStatus && !healthStatus.llm.available" severity="warn" :closable="false">
       <strong>LLM Not Ready:</strong> {{ healthStatus.llm.error || 'Model not available' }}
       <br>
-      <small>Please ensure Ollama is running and the model is installed.</small>
+      <small>If this is not running locally, this is expected at this time.</small>
     </Message>
 
     <ComplimentForm 
@@ -38,7 +38,7 @@ const formRef = ref(null)
 const generatedCompliment = ref(null)
 const healthStatus = ref(null)
 
-onMounted(async () => {
+onMounted(async() => {
   try {
     healthStatus.value = await api.healthCheck()
   } catch (err) {
@@ -51,7 +51,7 @@ onMounted(async () => {
   }
 })
 
-const generateCompliment = async (formData) => {
+const generateCompliment = async(formData) => {
   try {
     const result = await api.generateCompliment(formData)
     
@@ -110,4 +110,3 @@ const showToast = (options) => {
   }
 }
 </style>
-
