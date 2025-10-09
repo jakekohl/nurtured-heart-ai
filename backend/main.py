@@ -1,11 +1,12 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 import os
 
-from models import ComplimentRequest, EmailRequest
-from llm_service import llm_service
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from email_service import email_service
+from llm_service import llm_service
+from models import ComplimentRequest, EmailRequest
 
 # Load environment variables
 load_dotenv()
@@ -38,7 +39,7 @@ async def root():
 async def health_check():
     """Check API and LLM health."""
     model_status = await llm_service.check_model_availability()
-    
+
     return {
         "api": "healthy",
         "llm": model_status,

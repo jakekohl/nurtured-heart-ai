@@ -2,36 +2,25 @@
 
 echo "🚀 Setting up Nurtured Heart Compliment Generator..."
 
-# Create .env files
+# Create .env files from examples
 echo "📝 Creating environment files..."
 
-# Backend .env
-cat > backend/.env << 'EOF'
-# Backend Configuration
-HOST=0.0.0.0
-PORT=8000
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+# Check if .env files already exist
+if [ -f "backend/.env" ]; then
+  echo "⚠️  backend/.env already exists, skipping..."
+else
+  cp backend/.env.example backend/.env
+  echo "✅ Created backend/.env from .env.example"
+fi
 
-# LLM Configuration
-OLLAMA_HOST=http://localhost:11434
-DEFAULT_MODEL=llama3.2:latest
-TEMPERATURE=0.7
+if [ -f "frontend/.env" ]; then
+  echo "⚠️  frontend/.env already exists, skipping..."
+else
+  cp frontend/.env.example frontend/.env
+  echo "✅ Created frontend/.env from .env.example"
+fi
 
-# Email Configuration (optional - for sending compliments)
-# Uncomment and configure if you want to enable email sending
-#SMTP_HOST=smtp.gmail.com
-#SMTP_PORT=587
-#SMTP_USER=your-email@gmail.com
-#SMTP_PASSWORD=your-app-password
-#FROM_EMAIL=your-email@gmail.com
-EOF
-
-# Frontend .env
-cat > frontend/.env << 'EOF'
-VITE_API_URL=http://localhost:8000
-EOF
-
-echo "✅ Environment files created!"
+echo "✅ Environment files ready!"
 echo ""
 echo "📦 Installing dependencies..."
 

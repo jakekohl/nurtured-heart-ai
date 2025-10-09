@@ -7,7 +7,7 @@ def create_nurtured_heart_prompt(
 ) -> str:
     """
     Creates a prompt for generating Nurtured Heart compliments.
-    
+
     Nurtured Heart Approach focuses on:
     - Recognizing positive behaviors and qualities
     - Being specific and genuine
@@ -15,17 +15,17 @@ def create_nurtured_heart_prompt(
     - Avoiding comparative language
     - Celebrating who they are, not just what they do
     """
-    
+
     qualities_text = ", ".join(qualities)
     context_section = f"\n\nRecent context: {context}" if context else ""
-    
+
     tone_guidance = {
         "warm": "warm and caring",
         "encouraging": "encouraging and uplifting",
         "celebratory": "celebratory and joyful",
         "gentle": "gentle and supportive"
     }.get(tone, "warm and caring")
-    
+
     prompt = f"""You are a Nurtured Heart Approach expert. Generate a genuine, heartfelt compliment for {recipient_name}, who is a {relationship}.
 
 Key qualities to recognize: {qualities_text}{context_section}
@@ -41,6 +41,6 @@ Guidelines for the compliment:
 8. Make it feel personal and authentic
 
 Generate a Nurtured Heart compliment now:"""
-    
+
     return prompt
 

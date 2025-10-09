@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
@@ -9,7 +7,8 @@ services:
       - OLLAMA_HOST=http://ollama:11434
       - CORS_ORIGINS=http://localhost:5173
     depends_on:
-      - ollama
+      ollama:
+        condition: service_healthy
     volumes:
       - ./backend:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -24,11 +23,17 @@ services:
     command: npm run dev
 
   ollama:
-    image: ollama/ollama:latest
+    build: ./ollama
     ports:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   ollama_data:

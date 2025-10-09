@@ -76,25 +76,20 @@ This will:
 
 **Step 1: Create Environment Files**
 
-Backend (`backend/.env`):
+Backend:
 ```bash
-cat > backend/.env << 'EOF'
-HOST=0.0.0.0
-PORT=8000
-CORS_ORIGINS=http://localhost:5173
-
-OLLAMA_HOST=http://localhost:11434
-DEFAULT_MODEL=llama3.2:latest
-TEMPERATURE=0.7
-EOF
+cd backend
+cp .env.example .env
 ```
 
-Frontend (`frontend/.env`):
+Frontend:
 ```bash
-cat > frontend/.env << 'EOF'
-VITE_API_URL=http://localhost:8000
-EOF
+cd frontend
+cp .env.example .env
 ```
+
+> 📖 **For detailed environment configuration options, see [ENV_SETUP.md](ENV_SETUP.md)**  
+> This includes SMTP setup for email functionality, production deployment, and more.
 
 **Step 2: Install Backend Dependencies**
 
