@@ -233,6 +233,7 @@ Both frontend and backend support hot reload for rapid development.
 For detailed development guides:
 - **[Backend Development](backend/README.md#-development)** - API customization, prompts, testing
 - **[Frontend Development](frontend/README.md#-development)** - Components, routing, styling
+- **[Linting Guide](LINTING.md)** - Code quality and style enforcement
 
 ### Quick Start Development
 
@@ -248,6 +249,27 @@ uvicorn main:app --reload
 cd frontend
 npm run dev
 ```
+
+### Code Quality
+
+This project uses linters to maintain code quality:
+
+**Backend (Python):**
+```bash
+cd backend
+ruff check .          # Check for issues
+ruff check --fix .    # Auto-fix issues
+ruff format .         # Format code
+```
+
+**Frontend (JavaScript/Vue):**
+```bash
+cd frontend
+npm run lint          # Check for issues
+npm run lint:fix      # Auto-fix issues
+```
+
+See **[LINTING.md](LINTING.md)** for complete linting documentation.
 
 ---
 
@@ -339,6 +361,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **[Backend Documentation](backend/README.md)** - API, configuration, models, email setup
 - **[Frontend Documentation](frontend/README.md)** - Components, routing, styling, deployment
+- **[Linting Documentation](LINTING.md)** - Code quality, style guides, linter setup
 - **[API Docs](http://localhost:8000/docs)** - Interactive API documentation (when running)
 
 ## 🙋 Need Help?
