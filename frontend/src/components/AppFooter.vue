@@ -21,6 +21,7 @@
         <ul>
           <li><a href="https://nurturedheart.com" target="_blank" rel="noopener">Nurtured Heart Approach</a></li>
           <li><a href="#" target="_blank" rel="noopener">GitHub Repository</a></li>
+          <li><a :href="apiDocsUrl" target="_blank" rel="noopener">API Documentation</a></li>
         </ul>
       </div>
       
@@ -42,7 +43,10 @@
 </template>
 
 <script setup>
-// No props or logic needed for this component
+import { computed } from 'vue'
+
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const apiDocsUrl = computed(() => `${apiUrl}/docs`)
 </script>
 
 <style scoped>

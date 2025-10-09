@@ -55,9 +55,11 @@ This project uses environment variables to manage configuration for both local d
 
 | Variable | Description | Default (Local) | Example (Production) |
 |----------|-------------|-----------------|---------------------|
-| `VITE_API_URL` | Backend API URL | `http://localhost:8000` | `https://api.yourdomain.com` |
+| `VITE_API_URL` | Backend API URL (also used for API docs link) | `http://localhost:8000` | `https://nurtured-heart-ai-backend.vercel.app` |
 | `VITE_APP_TITLE` | Application title | `Nurtured Heart AI` | `Nurtured Heart AI` |
 | `VITE_APP_VERSION` | Application version | `1.0.0` | `1.0.0` |
+
+**Note:** The `VITE_API_URL` is used to construct the API Documentation link in the footer (appends `/docs` to the URL).
 
 ## Production Deployment
 
