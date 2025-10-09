@@ -1,3 +1,21 @@
+[project]
+name = "nurtured-heart-api"
+version = "1.0.0"
+description = "Generate heartfelt compliments using AI and the Nurtured Heart Approach"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi==0.115.0",
+    "uvicorn[standard]==0.32.1",
+    "pydantic==2.10.4",
+    "pydantic-settings==2.7.0",
+    "python-dotenv==1.0.1",
+    "ollama==0.4.4",
+    "python-multipart==0.0.20",
+    "email-validator==2.2.0",
+    "aiosmtplib==3.0.2",
+    "jinja2==3.1.5",
+]
+
 [tool.ruff]
 # Set the line length
 line-length = 100

@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+*.egg-info
+.ruffignore
+lint.sh
+Dockerfile
+README.md
+
