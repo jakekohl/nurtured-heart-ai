@@ -3,7 +3,7 @@
 An AI-powered web application that generates heartfelt, meaningful compliments using the Nurtured Heart Approach.
 
 ![Project Status](https://img.shields.io/badge/status-ready-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 📸 What It Does
 
@@ -317,7 +317,21 @@ The Nurtured Heart Approach focuses on recognizing and celebrating inner greatne
 
 ## 📄 License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### What does this mean?
+
+✅ **You can:**
+- Use this project commercially
+- Modify and distribute it
+- Use it privately
+- Sublicense it
+
+❗ **You must:**
+- Include the original copyright notice and license
+
+🚫 **This software comes with:**
+- NO warranty or liability
 
 ---
 
