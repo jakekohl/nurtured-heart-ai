@@ -3,7 +3,11 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "maxDuration": 30
+      }
     }
   ],
   "routes": [
@@ -13,7 +17,7 @@
     }
   ],
   "env": {
-    "OLLAMA_HOST": "http://localhost:11434",
+    "AI_SERVICE": "gemini",
     "CORS_ORIGINS": "*"
   }
 }

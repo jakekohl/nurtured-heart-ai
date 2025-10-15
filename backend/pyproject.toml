@@ -2,7 +2,7 @@
 name = "nurtured-heart-api"
 version = "1.0.0"
 description = "Generate heartfelt compliments using AI and the Nurtured Heart Approach"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi==0.115.0",
     "uvicorn[standard]==0.32.1",
@@ -14,6 +14,7 @@ dependencies = [
     "email-validator==2.2.0",
     "aiosmtplib==3.0.2",
     "jinja2==3.1.5",
+    "google-generativeai==0.8.3",
 ]
 
 [tool.ruff]
