@@ -79,7 +79,7 @@ class LLMService:
 
     async def _generate_with_gemini(self, prompt: str) -> ComplimentResponse:
         """Generate compliment using Google Gemini."""
-        response = await self.model.generate_content_async(
+        response = self.model.generate_content(
             prompt,
             generation_config=genai.types.GenerationConfig(
                 temperature=self.temperature,
