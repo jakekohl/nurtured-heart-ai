@@ -36,7 +36,7 @@
         <h4>Resources</h4>
         <ul>
           <li><a href="https://www.nurturedheartinstitute.com" target="_blank" rel="noopener">Nurtured Heart Approach</a></li>
-          <li><a href="#" target="_blank" rel="noopener">GitHub Repository</a></li>
+          <li><a href="https://github.com/jakekohl/nurtured-heart-ai" target="_blank" rel="noopener">GitHub Repository</a></li>
           <li><a :href="apiDocsUrl" target="_blank" rel="noopener">API Documentation</a></li>
         </ul>
       </div>

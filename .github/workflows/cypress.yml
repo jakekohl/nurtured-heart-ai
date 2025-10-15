@@ -1,0 +1,67 @@
+name: Cypress E2E Tests
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Cypress dependencies
+        working-directory: ./frontend
+        run: |
+          npm ci
+
+      - name: Build and start services with docker compose
+        run: |
+          # Create a CI-specific docker-compose override that removes problematic volume mounts
+          cat > docker-compose.ci.yml << EOF
+          services:
+            frontend:
+              volumes: []
+          EOF
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --build -d
+          
+      - name: Wait for services to be ready
+        run: |
+          # Wait for backend to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:8000/health 2>/dev/null; do sleep 2; done'
+          # Wait for frontend to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:5173 2>/dev/null; do sleep 2; done'
+          # Wait for ollama to be ready
+          timeout 60 bash -c 'until curl -f http://localhost:11434/api/tags 2>/dev/null; do sleep 2; done'
+          
+      - name: Run Cypress tests with recording
+        working-directory: ./frontend
+        run: |
+          npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: jkecp8
+          
+      - name: Stop services
+        if: always()
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml down
+          
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos/
+          
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots/
