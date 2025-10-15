@@ -289,6 +289,8 @@ npm run dev
 
 The project includes Cypress for end-to-end testing against localhost.
 
+[![nurtured-heart-ai](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/jkecp8&style=for-the-badge&logo=cypress)](https://cloud.cypress.io/projects/jkecp8/runs)
+
 #### Prerequisites
 
 1. **Start the application:**
