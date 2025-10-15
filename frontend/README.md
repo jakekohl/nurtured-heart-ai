@@ -285,6 +285,76 @@ npm run dev
 
 ## 🧪 Testing
 
+### Cypress E2E Testing
+
+The project includes Cypress for end-to-end testing against localhost.
+
+#### Prerequisites
+
+1. **Start the application:**
+   ```bash
+   # Start both frontend and backend
+   docker-compose up
+   
+   # Or start individually:
+   npm run dev  # Frontend on http://localhost:5173
+   # Backend should be running on http://localhost:8000
+   ```
+
+2. **Verify services are running:**
+   ```bash
+   # Check frontend
+   curl http://localhost:5173
+   
+   # Check backend
+   curl http://localhost:8000/health
+   ```
+
+#### Running Tests
+
+```bash
+# Run tests in headless mode
+npm run test
+
+# Open Cypress Test Runner (interactive)
+npm run test:open
+
+# Run tests in headed mode (see browser)
+npm run test:headed
+```
+
+#### Test Configuration
+
+- **Base URL:** `http://localhost:5173` (configured in `cypress.config.js`)
+- **Test Files:** `cypress/e2e/**/*.cy.js`
+- **Support Files:** `cypress/support/`
+
+#### Writing Tests
+
+Tests are located in `cypress/e2e/`. Example test structure:
+
+```javascript
+describe('Compliment Generator', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
+  it('should generate a compliment', () => {
+    // Fill form and test generation
+    cy.get('#recipientName').type('John')
+    cy.get('.generate-btn').click()
+    cy.get('.compliment-text').should('be.visible')
+  })
+})
+```
+
+#### Test Commands
+
+Available npm scripts:
+- `npm run test` - Run all tests headlessly
+- `npm run test:open` - Open Cypress Test Runner
+- `npm run test:headed` - Run tests with visible browser
+
 ### Manual Testing Checklist
 
 - [ ] Form validation works

@@ -47,7 +47,8 @@
     "node_modules/",
     "dist/",
     "build/",
-    "*.config.js"
+    "*.config.js",
+    "cypress/**/*.cy.js"
   ]
 }
 
