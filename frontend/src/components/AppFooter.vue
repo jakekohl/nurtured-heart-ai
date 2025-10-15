@@ -9,17 +9,33 @@
       <div class="footer-section">
         <h4>Quick Links</h4>
         <ul>
-          <li><router-link to="/">Compliment Generator</router-link></li>
-          <li><router-link to="/what-is-nha">What is NHA?</router-link></li>
-          <li><router-link to="/about">About This App</router-link></li>
-          <li><router-link to="/faq">FAQ</router-link></li>
+          <li>
+            <router-link to="/">
+              Compliment Generator
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/what-is-nha">
+              What is NHA?
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/about">
+              About This App
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/faq">
+              FAQ
+            </router-link>
+          </li>
         </ul>
       </div>
       
       <div class="footer-section">
         <h4>Resources</h4>
         <ul>
-          <li><a href="https://nurturedheart.com" target="_blank" rel="noopener">Nurtured Heart Approach</a></li>
+          <li><a href="https://www.nurturedheartinstitute.com" target="_blank" rel="noopener">Nurtured Heart Approach</a></li>
           <li><a href="#" target="_blank" rel="noopener">GitHub Repository</a></li>
           <li><a :href="apiDocsUrl" target="_blank" rel="noopener">API Documentation</a></li>
         </ul>

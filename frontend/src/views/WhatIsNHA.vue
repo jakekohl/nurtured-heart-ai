@@ -64,32 +64,52 @@
           <p>Explore these official resources to deepen your understanding of the Nurtured Heart Approach:</p>
           
           <div class="resource-links">
-            <a href="https://nurturedheart.com" target="_blank" rel="noopener" class="resource-link">
-              <i class="pi pi-external-link"></i>
+            <a
+              href="https://www.nurturedheartinstitute.com"
+              target="_blank"
+              rel="noopener"
+              class="resource-link"
+            >
+              <i class="pi pi-external-link" />
               <div>
                 <strong>Nurtured Heart Approach Official Website</strong>
                 <p>The primary resource for NHA information, training, and materials</p>
               </div>
             </a>
 
-            <a href="https://difficultchild.com" target="_blank" rel="noopener" class="resource-link">
-              <i class="pi pi-book"></i>
+            <a
+              href="https://difficultchild.com"
+              target="_blank"
+              rel="noopener"
+              class="resource-link"
+            >
+              <i class="pi pi-book" />
               <div>
                 <strong>The Nurtured Heart Approach Books</strong>
                 <p>Books by Howard Glasser, creator of the approach</p>
               </div>
             </a>
 
-            <a href="https://childrenssuccessfoundation.com" target="_blank" rel="noopener" class="resource-link">
-              <i class="pi pi-users"></i>
+            <a
+              href="https://childrenssuccessfoundation.com"
+              target="_blank"
+              rel="noopener"
+              class="resource-link"
+            >
+              <i class="pi pi-users" />
               <div>
                 <strong>Children's Success Foundation</strong>
                 <p>Training and certification programs for NHA practitioners</p>
               </div>
             </a>
 
-            <a href="https://www.youtube.com/results?search_query=nurtured+heart+approach" target="_blank" rel="noopener" class="resource-link">
-              <i class="pi pi-video"></i>
+            <a
+              href="https://www.youtube.com/results?search_query=nurtured+heart+approach"
+              target="_blank"
+              rel="noopener"
+              class="resource-link"
+            >
+              <i class="pi pi-video" />
               <div>
                 <strong>Video Resources</strong>
                 <p>Watch presentations and tutorials about the Nurtured Heart Approach</p>
@@ -223,4 +243,3 @@ h2 {
   }
 }
 </style>
-
