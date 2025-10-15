@@ -15,9 +15,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and start services with docker-compose
+      - name: Build and start services with docker compose
         run: |
-          docker-compose up --build -d
+          docker compose up --build -d
           
       - name: Wait for services to be ready
         run: |
@@ -44,7 +44,7 @@ jobs:
       - name: Stop services
         if: always()
         run: |
-          docker-compose down
+          docker compose down
           
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
