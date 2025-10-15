@@ -133,7 +133,7 @@ class LLMService:
         """Check Gemini service availability."""
         try:
             # Try to list available models to verify API key works
-            models = await genai.list_models_async()
+            models = list(genai.list_models())
             model_names = [m.name for m in models]
             
             return {
