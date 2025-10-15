@@ -26,21 +26,13 @@ def create_nurtured_heart_prompt(
         "gentle": "gentle and supportive"
     }.get(tone, "warm and caring")
 
-    prompt = f"""You are a Nurtured Heart Approach expert. Generate a genuine, heartfelt compliment for {recipient_name}, who is a {relationship}.
+    prompt = f"""Write a warm, genuine compliment for {recipient_name}, who is a {relationship}. 
 
-Key qualities to recognize: {qualities_text}{context_section}
+Focus on these qualities: {qualities_text}{context_section}
 
-Guidelines for the compliment:
-1. Be specific and genuine - reference the actual qualities mentioned
-2. Focus on their inner greatness and character, not just actions
-3. Use "I notice" or "I see" statements when appropriate
-4. Highlight their positive impact and presence
-5. Avoid comparisons to others or conditional praise
-6. Make it {tone_guidance} in tone
-7. Keep it to 2-4 sentences
-8. Make it feel personal and authentic
+Make it {tone_guidance} and conversational. Keep it to 2-3 sentences. Highlight their positive character traits and impact. Start the compliment by addressing {recipient_name} directly.
 
-Generate a Nurtured Heart compliment now:"""
+Write the compliment directly:"""
 
     return prompt
 

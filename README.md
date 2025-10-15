@@ -261,6 +261,46 @@ VITE_API_URL=http://localhost:8000  # Local development
 
 ---
 
+## 🧪 Testing
+
+The project includes Cypress for end-to-end testing.
+
+### Running Tests
+
+1. **Start the application:**
+   ```bash
+   # Start both services
+   docker-compose up
+   
+   # Or start individually:
+   cd frontend && npm run dev  # Frontend on http://localhost:5173
+   cd backend && python main.py  # Backend on http://localhost:8000
+   ```
+
+2. **Run Cypress tests:**
+   ```bash
+   cd frontend
+   
+   # Interactive test runner
+   npm run test:open
+   
+   # Headless test run
+   npm run test
+   
+   # Headed test run (see browser)
+   npm run test:headed
+   ```
+
+### Test Configuration
+
+- **Frontend:** http://localhost:5173
+- **Backend:** http://localhost:8000
+- **Test Files:** `frontend/cypress/e2e/**/*.cy.js`
+
+For detailed testing documentation, see [Frontend Testing Guide](frontend/README.md#-testing).
+
+---
+
 ## 🛠️ Development
 
 Both frontend and backend support hot reload for rapid development.
