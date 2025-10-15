@@ -1,0 +1,48 @@
+# Frontend files (not needed for backend deployment)
+frontend/
+frontend/**
+
+# Ollama files (not needed for production)
+ollama/
+ollama/**
+
+# Docker files
+docker-compose.yml
+*.Dockerfile
+
+# Development files
+.env
+.env.local
+.env.example
+*.md
+.git/
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.ruff_cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+tests/
+*_test.py
+test_*.py

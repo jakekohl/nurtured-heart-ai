@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "backend/api/index.py"
+    }
+  ],
+  "env": {
+    "AI_SERVICE": "gemini",
+    "CORS_ORIGINS": "*"
+  },
+  "functions": {
+    "backend/api/index.py": {
+      "maxDuration": 30
+    }
+  }
+}
