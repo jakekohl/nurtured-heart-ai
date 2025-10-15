@@ -16,16 +16,17 @@ This app helps you create meaningful, personalized compliments based on the **Nu
 
 ## ✨ Features
 
-- 🤖 Local LLM-powered compliment generation
+- 🤖 AI-powered compliment generation (Ollama local or Google Gemini)
 - 💝 Based on Nurtured Heart Approach principles
 - 🎨 Beautiful, responsive UI with PrimeVue
+- 🌐 Flexible deployment options (local or hosted)
 
 ## 🛠️ Tech Stack
 
 **Backend:**
 - Python 3.11+
 - FastAPI
-- Ollama (local LLM)
+- AI Services: Ollama (local) or Google Gemini (hosted)
 
 **Frontend:**
 - Vue.js 3
@@ -33,10 +34,31 @@ This app helps you create meaningful, personalized compliments based on the **Nu
 - Vite
 
 
+## 🤖 AI Service Options
+
+This application supports two AI service configurations that can be used both locally and in production:
+
+### 🦙 Ollama (Local Models)
+- **Best for:** Privacy-focused usage, offline capability, open-source models
+- **Requirements:** Ollama installed locally with LLM models
+- **Models:** llama3.2, mistral, or other Ollama-compatible models
+- **Privacy:** All processing happens on your local machine
+- **Use cases:** Local development, private deployments, offline usage
+
+### 🤖 Google Gemini (Cloud API)
+- **Best for:** Easy setup, powerful models, no local installation needed
+- **Requirements:** Google AI Studio API key (free tier available)
+- **Models:** gemini-pro, gemini-2.5-flash-lite
+- **Privacy:** Data sent to Google's servers (see their privacy policy)
+- **Use cases:** Local development, production deployments, shared hosting
+
+**Both services can be used locally!** The choice depends on your preferences for privacy vs convenience.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 
+**Option 1: Local Models with Ollama**
 1. **Install Ollama:** https://ollama.ai/download
    
    **macOS:**
@@ -54,6 +76,12 @@ This app helps you create meaningful, personalized compliments based on the **Nu
    ollama pull mistral # (smaller, faster)
    ollama pull llama3.2:1b # smallest, for testing
    ```
+
+**Option 2: Cloud API with Google Gemini (also works locally)**
+1. Get a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/)
+2. No local LLM installation required - works great for local development too!
+
+**Common Requirements:**
 3. **Python 3.11+** and **Node.js 18+**
 
 ### Installation
@@ -208,15 +236,27 @@ For detailed configuration options, see:
 ### Quick Configuration
 
 **Backend** (`backend/.env`):
+
+**Option 1: Local Models (Ollama)**
 ```env
+AI_SERVICE=ollama
 OLLAMA_HOST=http://localhost:11434
-DEFAULT_MODEL=llama3.2:latest
+OLLAMA_MODEL=llama3.2:1b
+TEMPERATURE=0.7
+```
+
+**Option 2: Cloud API (Google Gemini) - works locally too!**
+```env
+AI_SERVICE=gemini
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash-lite
 TEMPERATURE=0.7
 ```
 
 **Frontend** (`frontend/.env`):
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000  # Local development
+# VITE_API_URL=https://your-backend-url.com  # Production
 ```
 
 ---
@@ -311,8 +351,9 @@ For detailed deployment guides:
 ### Quick Deployment Options
 
 **Backend:**
-- Railway/Render/Fly.io (Python + Ollama)
-- AWS/GCP/Azure (VM with Docker)
+- **Recommended:** Vercel/Railway/Render (Python + Google Gemini)
+- **Alternative:** AWS/GCP/Azure (VM with Docker + Ollama)
+- **Configuration:** Both Ollama and Gemini work great for local development and production deployment
 
 **Frontend:**
 - Vercel/Netlify (Static hosting)

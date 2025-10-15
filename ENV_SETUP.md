@@ -12,7 +12,9 @@ This project uses environment variables to manage configuration for both local d
    cp .env.example .env
    ```
 
-2. The default `.env` file is ready for local development with Ollama running locally.
+2. Configure your AI service by setting the `AI_SERVICE` variable:
+   - **For local models:** `AI_SERVICE=ollama` (default)
+   - **For cloud API:** `AI_SERVICE=gemini` (works locally and in production)
 
 3. (Optional) Configure email service by updating these variables in `.env`:
    ```
@@ -39,11 +41,14 @@ This project uses environment variables to manage configuration for both local d
 
 | Variable | Description | Default (Local) | Example (Production) |
 |----------|-------------|-----------------|---------------------|
+| `AI_SERVICE` | AI service to use: `ollama` or `gemini` | `ollama` | `gemini` |
 | `HOST` | Server host address | `0.0.0.0` | `0.0.0.0` |
 | `PORT` | Server port | `8000` | `8000` |
 | `CORS_ORIGINS` | Allowed CORS origins (comma-separated) | `http://localhost:5173,http://localhost:3000` | `https://yourdomain.com` |
-| `OLLAMA_HOST` | Ollama API endpoint | `http://localhost:11434` | `http://ollama:11434` |
-| `DEFAULT_MODEL` | LLM model to use | `llama3.2:latest` | `llama3.2:latest` |
+| `OLLAMA_HOST` | Ollama API endpoint (for local dev) | `http://localhost:11434` | `http://ollama:11434` |
+| `OLLAMA_MODEL` | Ollama model to use (for local dev) | `llama3.2:1b` | `llama3.2:1b` |
+| `GEMINI_API_KEY` | Google Gemini API key (for hosted) | (empty) | `your_api_key_here` |
+| `GEMINI_MODEL` | Gemini model to use (for hosted) | (empty) | `gemini-2.5-flash-lite` |
 | `TEMPERATURE` | LLM temperature setting | `0.7` | `0.7` |
 | `SMTP_HOST` | SMTP server hostname | (empty - disabled) | `smtp.gmail.com` |
 | `SMTP_PORT` | SMTP server port | `587` | `587` |
@@ -61,6 +66,41 @@ This project uses environment variables to manage configuration for both local d
 
 **Note:** The `VITE_API_URL` is used to construct the API Documentation link in the footer (appends `/docs` to the URL).
 
+## AI Service Configuration
+
+This application supports two AI service configurations that can both be used locally:
+
+### Local Models (Ollama)
+Set `AI_SERVICE=ollama` and configure:
+```env
+AI_SERVICE=ollama
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.2:1b
+TEMPERATURE=0.7
+```
+
+**Requirements:**
+- Ollama installed locally
+- Model downloaded (e.g., `ollama pull llama3.2:1b`)
+- Ollama server running (`ollama serve`)
+
+**Benefits:** Complete privacy, works offline, open-source models
+
+### Cloud API (Google Gemini)
+Set `AI_SERVICE=gemini` and configure:
+```env
+AI_SERVICE=gemini
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash-lite
+TEMPERATURE=0.7
+```
+
+**Requirements:**
+- Google AI Studio API key from [aistudio.google.com](https://aistudio.google.com/)
+- Internet connection
+
+**Benefits:** Easy setup, powerful models, works great for local development too!
+
 ## Production Deployment
 
 ### Backend Production Setup
@@ -72,8 +112,9 @@ This project uses environment variables to manage configuration for both local d
    ```
 
 2. Update the following values:
+   - `AI_SERVICE`: Choose `ollama` or `gemini` (both work in production)
+   - `GEMINI_API_KEY`: Add your Google AI Studio API key (if using Gemini)
    - `CORS_ORIGINS`: Set to your production frontend URL(s)
-   - `OLLAMA_HOST`: Update if using a different Ollama instance
    - Email configuration: Add your production SMTP credentials
 
 ### Frontend Production Setup

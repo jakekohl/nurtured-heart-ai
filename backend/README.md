@@ -43,9 +43,10 @@ HOST=0.0.0.0
 PORT=8000
 CORS_ORIGINS=http://localhost:5173
 
-# Ollama Configuration
+# AI Service Configuration
+AI_SERVICE=ollama
 OLLAMA_HOST=http://localhost:11434
-DEFAULT_MODEL=llama3.2:latest
+OLLAMA_MODEL=llama3.2:1b
 TEMPERATURE=0.7
 
 # Email Configuration (Optional)
@@ -71,8 +72,9 @@ EOF
 
 | Variable | Default | Description |
 |----------|---------|-------------|
+| `AI_SERVICE` | `ollama` | AI service to use: `ollama` or `gemini` |
 | `OLLAMA_HOST` | `http://localhost:11434` | Ollama server URL |
-| `DEFAULT_MODEL` | `llama3.2:latest` | LLM model to use |
+| `OLLAMA_MODEL` | `llama3.2:1b` | Ollama model to use |
 | `TEMPERATURE` | `0.7` | LLM temperature (0.0-1.0, higher = more creative) |
 
 ### Email Configuration (Optional)
@@ -191,7 +193,7 @@ ollama pull phi3
 1. Pull the desired model
 2. Update `.env`:
    ```env
-   DEFAULT_MODEL=mistral:latest
+   OLLAMA_MODEL=mistral:latest
    ```
 3. Restart the server
 
