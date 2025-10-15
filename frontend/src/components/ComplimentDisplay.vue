@@ -2,47 +2,54 @@
   <Card v-if="compliment" class="compliment-display">
     <template #title>
       <div class="display-title">
-        <i class="pi pi-star-fill" style="color: #fbbf24;"></i>
+        <i class="pi pi-star-fill" style="color: #fbbf24;" />
         Your Nurtured Heart Compliment
       </div>
     </template>
     
     <template #content>
       <div class="compliment-content">
-        <p class="compliment-text">{{ compliment.compliment }}</p>
+        <p class="compliment-text">
+          {{ compliment.compliment }}
+        </p>
         
         <div class="actions">
           <Button 
             label="Copy" 
             icon="pi pi-copy"
-            @click="copyToClipboard"
             class="action-btn copy-btn"
+            @click="copyToClipboard"
           />
           <Button 
             label="Email" 
             icon="pi pi-envelope"
-            @click="showEmailDialog = true"
             class="action-btn email-btn"
+            @click="showEmailDialog = true"
           />
           <Button 
             v-if="canShare"
             label="Share" 
             icon="pi pi-share-alt"
-            @click="shareCompliment"
             class="action-btn share-btn"
+            @click="shareCompliment"
           />
           <Button 
             label="Generate Another" 
             icon="pi pi-refresh"
-            @click="$emit('reset')"
             class="action-btn generate-btn"
+            @click="$emit('reset')"
           />
         </div>
         
         <div class="promo-text">
           <p>
             Powered by 
-            <a href="https://nurturedheartai.com" target="_blank" rel="noopener noreferrer" class="promo-link">
+            <a
+              href="https://nurtured-heart-ai.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="promo-link"
+            >
               Nurtured Heart AI
             </a>
             - Creating meaningful connections through personalized compliments
@@ -73,14 +80,14 @@
         <div class="email-actions">
           <Button 
             label="Cancel" 
-            @click="showEmailDialog = false"
             text
+            @click="showEmailDialog = false"
           />
           <Button 
             label="Send" 
             icon="pi pi-send"
-            @click="sendEmail"
             :loading="sendingEmail"
+            @click="sendEmail"
           />
         </div>
       </div>
@@ -113,7 +120,7 @@ const checkShareSupport = () => {
   canShare.value = navigator.share && navigator.canShare
 }
 
-const copyToClipboard = async () => {
+const copyToClipboard = async() => {
   try {
     await navigator.clipboard.writeText(props.compliment.compliment)
     emit('toast', { 
@@ -132,9 +139,9 @@ const copyToClipboard = async () => {
   }
 }
 
-const shareCompliment = async () => {
+const shareCompliment = async() => {
   try {
-    const shareText = `${props.compliment.compliment}\n\nYour greatness has inspired me to compliment you with Nurtured-heart-ai. If you want to compliment someone else's greatness, head to https://nurturedheartai.com`
+    const shareText = `${props.compliment.compliment}\n\nYour greatness has inspired me to compliment you with Nurtured-heart-ai. If you want to compliment someone else's greatness, head to https://nurtured-heart-ai.vercel.app`
     
     // Try sharing with just text first (some platforms prefer this)
     if (navigator.canShare && navigator.canShare({ text: shareText })) {
@@ -145,11 +152,11 @@ const shareCompliment = async () => {
         detail: 'Compliment shared successfully',
         life: 3000
       })
-    } else if (navigator.canShare && navigator.canShare({ text: shareText, url: 'https://nurturedheartai.com' })) {
+    } else if (navigator.canShare && navigator.canShare({ text: shareText, url: 'https://nurtured-heart-ai.vercel.app' })) {
       // Fallback to sharing with both text and URL
       await navigator.share({ 
         text: shareText, 
-        url: 'https://nurturedheartai.com' 
+        url: 'https://nurtured-heart-ai.vercel.app' 
       })
       emit('toast', { 
         severity: 'success', 
@@ -171,7 +178,7 @@ const shareCompliment = async () => {
     if (err.name !== 'AbortError') {
       // Fallback to copy to clipboard if sharing fails
       try {
-        const fallbackText = `"${props.compliment.compliment}"\n\nYour greatness has inspired me to compliment you with Nurtured-heart-ai. If you want to compliment someone else's greatness, head to https://nurturedheartai.com`
+        const fallbackText = `"${props.compliment.compliment}"\n\nYour greatness has inspired me to compliment you with Nurtured-heart-ai. If you want to compliment someone else's greatness, head to https://nurtured-heart-ai.vercel.app`
         await navigator.clipboard.writeText(fallbackText)
         emit('toast', { 
           severity: 'info', 
@@ -191,7 +198,7 @@ const shareCompliment = async () => {
   }
 }
 
-const sendEmail = async () => {
+const sendEmail = async() => {
   if (!emailData.value.recipient_email) {
     emit('toast', { 
       severity: 'warn', 
@@ -423,4 +430,3 @@ onMounted(() => {
   width: 100%;
 }
 </style>
-
