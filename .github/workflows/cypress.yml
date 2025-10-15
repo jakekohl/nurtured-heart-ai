@@ -15,9 +15,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Install Cypress dependencies
+        working-directory: ./frontend
+        run: |
+          npm ci
+
       - name: Build and start services with docker compose
         run: |
-          docker compose up --build -d
+          # Create a CI-specific docker-compose override that removes problematic volume mounts
+          cat > docker-compose.ci.yml << EOF
+          services:
+            frontend:
+              volumes: []
+          EOF
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml up --build -d
           
       - name: Wait for services to be ready
         run: |
@@ -27,11 +38,6 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:5173 2>/dev/null; do sleep 2; done'
           # Wait for ollama to be ready
           timeout 60 bash -c 'until curl -f http://localhost:11434/api/tags 2>/dev/null; do sleep 2; done'
-          
-      - name: Install Cypress dependencies
-        working-directory: ./frontend
-        run: |
-          npm ci
           
       - name: Run Cypress tests with recording
         working-directory: ./frontend
@@ -44,7 +50,7 @@ jobs:
       - name: Stop services
         if: always()
         run: |
-          docker compose down
+          docker compose -f docker-compose.yml -f docker-compose.ci.yml down
           
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
