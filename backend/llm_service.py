@@ -36,7 +36,7 @@ class LLMService:
             raise ValueError("GEMINI_API_KEY environment variable is required for Gemini service")
         
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-1.5-flash"))
+        self.model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-pro"))
         self.temperature = float(os.getenv("TEMPERATURE", "0.7"))
 
     async def generate_compliment(self, request: ComplimentRequest) -> ComplimentResponse:
