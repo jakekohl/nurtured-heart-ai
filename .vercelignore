@@ -1,7 +1,3 @@
-# Frontend files (not needed for backend deployment)
-frontend/
-frontend/**
-
 # Ollama files (not needed for production)
 ollama/
 ollama/**
