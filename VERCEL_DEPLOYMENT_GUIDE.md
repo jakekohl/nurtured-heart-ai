@@ -32,7 +32,7 @@ Your application is now configured to use:
 ```
 AI_SERVICE = gemini
 GEMINI_API_KEY = your_actual_api_key_from_step_1
-GEMINI_MODEL = gemini-1.5-flash
+GEMINI_MODEL = gemini-2.5-flash-lite
 CORS_ORIGINS = your_frontend_vercel_url
 ```
 

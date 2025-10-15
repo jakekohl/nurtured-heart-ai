@@ -30,7 +30,7 @@ In your Vercel dashboard, add the following environment variables:
 ### Required Variables:
 - `AI_SERVICE` = `gemini`
 - `GEMINI_API_KEY` = `your_actual_api_key_from_google_ai_studio`
-- `GEMINI_MODEL` = `gemini-1.5-flash`
+- `GEMINI_MODEL` = `gemini-2.5-flash-lite`
 - `CORS_ORIGINS` = `your_frontend_vercel_url`
 
 ### Optional Variables:
