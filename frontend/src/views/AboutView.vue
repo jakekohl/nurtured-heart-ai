@@ -33,29 +33,76 @@
           
           <div class="feature-grid">
             <div class="feature-item">
-              <i class="pi pi-sparkles"></i>
+              <i class="pi pi-sparkles" />
               <h3>AI-Powered Generation</h3>
               <p>Uses advanced language models to create authentic, specific compliments</p>
             </div>
 
             <div class="feature-item">
-              <i class="pi pi-heart"></i>
+              <i class="pi pi-heart" />
               <h3>NHA-Aligned</h3>
               <p>All compliments follow the principles of the Nurtured Heart Approach</p>
             </div>
 
             <div class="feature-item">
-              <i class="pi pi-users"></i>
+              <i class="pi pi-users" />
               <h3>Customizable</h3>
               <p>Tailor compliments to specific relationships, qualities, and contexts</p>
             </div>
 
             <div class="feature-item">
-              <i class="pi pi-shield"></i>
-              <h3>Privacy-Focused</h3>
-              <p>Runs locally with Ollama - your data stays on your machine</p>
+              <i class="pi pi-shield" />
+              <h3>Flexible AI Options</h3>
+              <p>Choose between local Ollama models for privacy or Google Gemini for convenience</p>
             </div>
           </div>
+        </section>
+
+        <Divider />
+
+        <section class="ai-services-section">
+          <h2>AI Service Options</h2>
+          <p>
+            This application supports two AI service configurations that can both be used locally:
+          </p>
+          
+          <div class="ai-services-grid">
+            <div class="ai-service-item">
+              <div class="service-icon">
+                🦙
+              </div>
+              <h3>Ollama (Local Models)</h3>
+              <p>
+                <strong>Best for:</strong> Privacy-focused usage, offline capability, open-source models
+              </p>
+              <ul>
+                <li>Complete privacy - all processing on your machine</li>
+                <li>Works offline once set up</li>
+                <li>Models: llama3.2, mistral, and other open-source LLMs</li>
+                <li>No internet required after initial setup</li>
+              </ul>
+            </div>
+
+            <div class="ai-service-item">
+              <div class="service-icon">
+                🤖
+              </div>
+              <h3>Google Gemini (Cloud API)</h3>
+              <p>
+                <strong>Best for:</strong> Easy setup, powerful models, no local installation needed
+              </p>
+              <ul>
+                <li>No local LLM installation required</li>
+                <li>Faster and more powerful models</li>
+                <li>Works great for local development</li>
+                <li>Perfect for sharing and production deployment</li>
+              </ul>
+            </div>
+          </div>
+          
+          <p class="ai-services-note">
+            <strong>Both services work locally!</strong> The choice depends on your preferences for privacy vs convenience.
+          </p>
         </section>
 
         <Divider />
@@ -72,7 +119,7 @@
               <strong>Backend:</strong> Python FastAPI
             </div>
             <div class="tech-item">
-              <strong>AI Model:</strong> Ollama with Llama 3
+              <strong>AI Services:</strong> Ollama (local models) or Google Gemini (cloud API)
             </div>
             <div class="tech-item">
               <strong>Deployment:</strong> Docker containers for easy setup
@@ -211,6 +258,61 @@ section p {
   color: #1e293b;
 }
 
+.ai-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.ai-service-item {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.service-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ai-service-item h3 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.ai-service-item p {
+  color: #475569;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.ai-service-item ul {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: #64748b;
+}
+
+.ai-service-item li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.ai-services-note {
+  background: #eff6ff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+  margin-top: 2rem;
+  text-align: center;
+  color: #1e40af;
+}
+
 .github-link {
   margin-top: 1.5rem;
 }
@@ -227,6 +329,9 @@ section p {
   .feature-grid {
     grid-template-columns: 1fr;
   }
+  
+  .ai-services-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
-
