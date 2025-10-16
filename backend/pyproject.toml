@@ -1,6 +1,6 @@
 [project]
 name = "nurtured-heart-api"
-version = "1.0.0"
+version = "1.1.0"
 description = "Generate heartfelt compliments using AI and the Nurtured Heart Approach"
 requires-python = ">=3.12"
 dependencies = [

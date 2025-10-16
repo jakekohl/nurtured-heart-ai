@@ -21,9 +21,11 @@
             @click="copyToClipboard"
           />
           <Button 
-            label="Email" 
+            v-tooltip.top="!emailServiceAvailable ? 'Email service is not configured or disabled' : ''" 
+            label="Email"
             icon="pi pi-envelope"
             class="action-btn email-btn"
+            :disabled="!emailServiceAvailable"
             @click="showEmailDialog = true"
           />
           <Button 
@@ -108,6 +110,7 @@ const emit = defineEmits(['reset', 'toast'])
 const showEmailDialog = ref(false)
 const sendingEmail = ref(false)
 const canShare = ref(false)
+const emailServiceAvailable = ref(false)
 const emailData = ref({
   recipient_email: '',
   sender_name: '',
@@ -118,6 +121,17 @@ const emailData = ref({
 // Check if Web Share API is supported
 const checkShareSupport = () => {
   canShare.value = navigator.share && navigator.canShare
+}
+
+// Check email service availability
+const checkEmailService = async() => {
+  try {
+    const health = await api.healthCheck()
+    emailServiceAvailable.value = health.email_service?.enabled || false
+  } catch (err) {
+    console.error('Failed to check email service availability:', err)
+    emailServiceAvailable.value = false
+  }
 }
 
 const copyToClipboard = async() => {
@@ -240,9 +254,10 @@ const sendEmail = async() => {
   }
 }
 
-// Initialize share support check on component mount
+// Initialize share support and email service check on component mount
 onMounted(() => {
   checkShareSupport()
+  checkEmailService()
 })
 </script>
 
@@ -311,12 +326,20 @@ onMounted(() => {
   border: 2px solid rgba(59, 130, 246, 0.8);
 }
 
-.email-btn:hover {
+.email-btn:hover:not(:disabled) {
   background: #3b82f6;
   color: #ffffff;
   border-color: #3b82f6;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.email-btn:disabled {
+  background: rgba(100, 116, 139, 0.5);
+  color: rgba(255, 255, 255, 0.6);
+  border-color: rgba(100, 116, 139, 0.5);
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .generate-btn {

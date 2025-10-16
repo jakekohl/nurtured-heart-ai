@@ -16,6 +16,16 @@ class EmailService:
         self.from_email = os.getenv("FROM_EMAIL", "")
         self.enabled = all([self.smtp_host, self.smtp_user, self.smtp_password])
 
+    def get_config(self) -> dict:
+        """Get email service configuration (excluding sensitive data)."""
+        return {
+            "enabled": self.enabled,
+            "smtp_host": self.smtp_host,
+            "smtp_port": self.smtp_port,
+            "from_email": self.from_email,
+            "configured": bool(self.smtp_host and self.smtp_user and self.smtp_password)
+        }
+
     async def send_compliment(self, email_request: EmailRequest) -> dict:
         """Send a compliment via email."""
 

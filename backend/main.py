@@ -39,11 +39,12 @@ async def root():
 async def health_check():
     """Check API and LLM health."""
     model_status = await llm_service.check_model_availability()
+    email_config = email_service.get_config()
 
     return {
         "api": "healthy",
         "llm": model_status,
-        "email_service": email_service.enabled
+        "email_service": email_config
     }
 
 @app.post("/api/generate", response_model=dict)
