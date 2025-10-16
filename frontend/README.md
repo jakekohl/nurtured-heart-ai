@@ -1,90 +1,16 @@
 # Frontend - Nurtured Heart Compliment Generator
 
-Vue.js 3 frontend application for generating Nurtured Heart compliments with a beautiful, responsive UI.
+Vue.js 3 frontend application with a beautiful, responsive UI built with PrimeVue.
 
 ## 🛠️ Tech Stack
 
-- **Vue.js 3** - Progressive JavaScript framework
-- **PrimeVue** - UI component library
-- **Vite** - Next-generation frontend tooling
+- **Vue.js 3** - Composition API with `<script setup>`
+- **PrimeVue** - Enterprise-grade UI component library
+- **Vite** - Lightning-fast build tool
 - **Vue Router** - Official routing library
+- **Axios** - HTTP client
 
-## 📋 Requirements
-
-- Node.js 18+ and npm
-- Backend API running (default: http://localhost:8000)
-
-## 🚀 Setup
-
-### 1. Install Dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-### 2. Create Environment File
-
-Create a `.env` file in the `frontend/` directory:
-
-```bash
-cat > .env << 'EOF'
-VITE_API_URL=http://localhost:8000
-EOF
-```
-
-## ⚙️ Configuration Options
-
-### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VITE_API_URL` | `http://localhost:8000` | Backend API base URL |
-
-### Update for Production
-
-```env
-VITE_API_URL=https://api.yourdomain.com
-```
-
-## 🎮 Running the Application
-
-### Development Mode
-
-```bash
-npm run dev
-```
-
-Application runs at: **http://localhost:5173**
-
-### Using Helper Script
-
-```bash
-cd ..  # Go to project root
-./start-frontend.sh
-```
-
-### Custom Port
-
-```bash
-npm run dev -- --port 3000
-```
-
-## 🏗️ Build for Production
-
-### Build
-
-```bash
-npm run build
-```
-
-Built files will be in `dist/` directory.
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
+---
 
 ## 📁 Project Structure
 
@@ -92,79 +18,140 @@ npm run preview
 frontend/
 ├── src/
 │   ├── components/
-│   │   ├── ComplimentForm.vue      # Main form component
+│   │   ├── ComplimentForm.vue      # Main form with inputs
 │   │   ├── ComplimentDisplay.vue   # Display generated compliment
-│   │   ├── NavigationMenu.vue      # Navigation bar
-│   │   └── AppFooter.vue          # Footer component
+│   │   ├── NavigationMenu.vue      # Top navigation bar
+│   │   └── AppFooter.vue          # Footer with links
 │   ├── views/
-│   │   ├── GeneratorView.vue      # Main generator page
-│   │   ├── AboutView.vue          # About page
-│   │   ├── WhatIsNHA.vue         # NHA information page
-│   │   └── FAQView.vue           # FAQ page
+│   │   ├── GeneratorView.vue      # Main generator page (/)
+│   │   ├── AboutView.vue          # About page (/about)
+│   │   ├── WhatIsNHA.vue         # NHA information (/what-is-nha)
+│   │   └── FAQView.vue           # FAQ page (/faq)
 │   ├── router/
 │   │   └── index.js              # Vue Router configuration
 │   ├── services/
-│   │   └── api.js                # API client
+│   │   └── api.js                # Backend API client (Axios)
 │   ├── App.vue                   # Root component
 │   └── main.js                   # Application entry point
+├── cypress/
+│   ├── e2e/                      # End-to-end test specs
+│   ├── support/                  # Cypress commands & helpers
+│   └── fixtures/                 # Test data
 ├── public/                       # Static assets
 ├── index.html                    # HTML template
-├── package.json                  # Dependencies
+├── package.json                  # Dependencies & scripts
 ├── vite.config.js               # Vite configuration
-└── .env                         # Environment variables (create this)
+└── cypress.config.js            # Cypress configuration
 ```
 
-## 🎨 PrimeVue Components Used
+---
 
-The application leverages PrimeVue components for a polished UI:
+## 🎨 PrimeVue Components
 
-- **Form Elements:** InputText, Dropdown, Chips, Textarea, Button
-- **Layout:** Card, Divider
-- **Feedback:** Toast, ProgressSpinner, Tag
-- **Navigation:** Menubar
-- **Utilities:** Tooltip
+This application uses PrimeVue for a polished, professional UI.
+
+### Components Used
+
+**Form Elements:**
+- `InputText` - Text inputs
+- `Dropdown` - Select dropdowns
+- `Chip` - Tag/chip display for qualities
+- `Textarea` - Multi-line text input
+- `Button` - Action buttons
+
+**Layout:**
+- `Card` - Content containers
+- `Divider` - Visual separators
+- `Accordion` / `AccordionTab` - Collapsible content
+
+**Feedback:**
+- `Toast` - Notification messages
+- `ProgressSpinner` - Loading indicator
+- `Message` - Inline messages
+
+**Navigation:**
+- Custom navigation using PrimeVue Button components
 
 ### Adding More PrimeVue Components
 
-1. Import in component:
-   ```vue
-   import Dialog from 'primevue/dialog';
-   ```
+**1. Import globally in `main.js`:**
+```javascript
+import Dialog from 'primevue/dialog'
+app.component('Dialog', Dialog)
+```
 
-2. Use in template:
-   ```vue
-   <Dialog v-model:visible="display">
-     Content here
-   </Dialog>
-   ```
+**2. Or import locally in component:**
+```vue
+<script setup>
+import Dialog from 'primevue/dialog'
+</script>
+
+<template>
+  <Dialog v-model:visible="showDialog">
+    Content here
+  </Dialog>
+</template>
+```
+
+**3. Browse available components:** [PrimeVue Documentation](https://primevue.org/)
+
+---
 
 ## 🛠️ Development
 
-### Hot Module Replacement (HMR)
+### Running Dev Server
 
-Vite provides instant HMR - edit any `.vue` file and see changes immediately without page refresh.
+```bash
+cd frontend
+npm run dev
+```
+
+Runs at: http://localhost:5173
+
+### Hot Module Replacement
+
+Vite provides instant HMR - edit any `.vue` file and see changes without page refresh!
+
+---
 
 ### Component Development
 
-Create new components in `src/components/`:
+**Create new component in `src/components/`:**
 
 ```vue
 <template>
-  <div>
-    <!-- Your template -->
-  </div>
+  <Card>
+    <template #title>{{ title }}</template>
+    <template #content>
+      <p>{{ content }}</p>
+    </template>
+  </Card>
 </template>
 
 <script setup>
-// Your logic
+import { ref } from 'vue'
+
+const props = defineProps({
+  title: String,
+  content: String
+})
+
+const emit = defineEmits(['action'])
 </script>
 
 <style scoped>
-/* Your styles */
+/* Component-specific styles */
 </style>
 ```
 
-### Add New Routes
+**Use Composition API with `<script setup>`:**
+- More concise syntax
+- Better TypeScript support
+- Automatic component registration
+
+---
+
+### Adding Routes
 
 In `src/router/index.js`:
 
@@ -176,30 +163,80 @@ In `src/router/index.js`:
 }
 ```
 
+**Lazy loading** with `import()` improves initial load time.
+
+---
+
 ### API Integration
 
-The API service is in `src/services/api.js`:
+The API service is centralized in `src/services/api.js`:
 
 ```javascript
-export const generateCompliment = async (data) => {
-  const response = await fetch(`${API_URL}/api/generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  return response.json();
-};
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
+
+export default {
+  async generateCompliment(data) {
+    const response = await apiClient.post('/api/generate', data)
+    return response.data
+  },
+  
+  async sendEmail(data) {
+    const response = await apiClient.post('/api/send-email', data)
+    return response.data
+  },
+  
+  async healthCheck() {
+    const response = await apiClient.get('/health')
+    return response.data
+  }
+}
 ```
+
+**Usage in components:**
+```vue
+<script setup>
+import api from '@/services/api'
+
+const generateCompliment = async () => {
+  try {
+    const result = await api.generateCompliment(formData)
+    // Handle result
+  } catch (error) {
+    console.error('Error:', error)
+  }
+}
+</script>
+```
+
+---
 
 ## 🎨 Customization
 
-### Colors & Theme
+### Theme & Colors
 
-PrimeVue theme is configured in `main.js`. To customize:
+PrimeVue theme is configured in `main.js`:
 
-1. **Use PrimeVue Designer:** https://designer.primevue.org
-2. **Or modify CSS variables** in `App.vue`:
+```javascript
+import 'primevue/resources/themes/lara-light-blue/theme.css'
+```
 
+**Available themes:**
+- `lara-light-blue` (current)
+- `lara-dark-blue`
+- `lara-light-purple`
+- `lara-dark-purple`
+- Many more at [PrimeVue Themes](https://primevue.org/theming/)
+
+**Custom CSS variables in `App.vue`:**
 ```css
 :root {
   --primary-color: #3b82f6;
@@ -208,7 +245,11 @@ PrimeVue theme is configured in `main.js`. To customize:
 }
 ```
 
-### Add Relationship Types
+**Use PrimeVue Designer:** [designer.primevue.org](https://designer.primevue.org) to create custom themes.
+
+---
+
+### Customize Relationship Types
 
 Edit `src/components/ComplimentForm.vue`:
 
@@ -216,11 +257,16 @@ Edit `src/components/ComplimentForm.vue`:
 const relationships = ref([
   { label: 'Student', value: 'student' },
   { label: 'Child', value: 'child' },
+  { label: 'Employee', value: 'employee' },
+  { label: 'Team Member', value: 'team_member' },
+  { label: 'Friend', value: 'friend' },
   // Add more here
-]);
+])
 ```
 
-### Modify Tone Options
+---
+
+### Customize Tone Options
 
 Edit `src/components/ComplimentForm.vue`:
 
@@ -228,9 +274,128 @@ Edit `src/components/ComplimentForm.vue`:
 const tones = ref([
   { label: 'Warm', value: 'warm' },
   { label: 'Enthusiastic', value: 'enthusiastic' },
+  { label: 'Calm', value: 'calm' },
+  { label: 'Professional', value: 'professional' },
   // Add more here
-]);
+])
 ```
+
+---
+
+## 🧪 Testing
+
+### Cypress E2E Testing
+
+The project includes comprehensive Cypress tests.
+
+[![Cypress Dashboard](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/jkecp8&style=for-the-badge&logo=cypress)](https://cloud.cypress.io/projects/jkecp8/runs)
+
+### Prerequisites
+
+**Start the application:**
+```bash
+# Option 1: Docker Compose
+docker-compose up
+
+# Option 2: Manual
+# Terminal 1 - Backend
+cd backend && python main.py
+
+# Terminal 2 - Frontend
+cd frontend && npm run dev
+```
+
+**Verify services:**
+```bash
+curl http://localhost:5173     # Frontend
+curl http://localhost:8000/health  # Backend
+```
+
+---
+
+### Running Tests
+
+```bash
+cd frontend
+
+# Headless mode (CI/CD)
+npm run test
+
+# Interactive Test Runner
+npm run test:open
+
+# Headed mode (see browser)
+npm run test:headed
+```
+
+---
+
+### Test Structure
+
+**Location:** `cypress/e2e/`
+
+**Test files:**
+- `compliment.cy.js` - Compliment generation flow
+- `navigation.cy.js` - Route navigation
+- `api.cy.js` - API health checks
+- `external_links.cy.js` - External link validation
+
+**Example test:**
+```javascript
+describe('Compliment Generator', () => {
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
+  it('generates a compliment successfully', () => {
+    cy.get('input[placeholder*="name"]').type('John')
+    cy.get('.p-dropdown').first().click()
+    cy.contains('Student').click()
+    cy.get('input[placeholder*="quality"]').type('creative{enter}')
+    cy.get('textarea').type('completed an art project')
+    cy.get('button').contains('Generate').click()
+    cy.get('.compliment-display').should('be.visible')
+  })
+})
+```
+
+---
+
+### Custom Commands
+
+Located in `cypress/support/commands.js`:
+
+```javascript
+// Example custom command
+Cypress.Commands.add('fillComplimentForm', (data) => {
+  cy.get('input[placeholder*="name"]').type(data.name)
+  cy.get('.p-dropdown').first().click()
+  cy.contains(data.relationship).click()
+  // ... more form filling
+})
+
+// Usage in tests
+cy.fillComplimentForm({
+  name: 'John',
+  relationship: 'Student'
+})
+```
+
+---
+
+### Test Configuration
+
+**`cypress.config.js`:**
+```javascript
+{
+  e2e: {
+    baseUrl: 'http://localhost:5173',
+    supportFile: 'cypress/support/e2e.js'
+  }
+}
+```
+
+---
 
 ## 🐛 Troubleshooting
 
@@ -240,38 +405,69 @@ const tones = ref([
 # Check what's using port 5173
 lsof -i :5173
 
-# Use different port
+# Kill it (replace PID)
+kill -9 <PID>
+
+# Or use different port
 npm run dev -- --port 3000
 ```
+
+---
 
 ### Dependencies Issues
 
 ```bash
-# Clear node_modules and reinstall
+# Clear and reinstall
 rm -rf node_modules package-lock.json
+npm install
+
+# Clear npm cache if still having issues
+npm cache clean --force
 npm install
 ```
 
+---
+
 ### Backend Connection Error
 
-1. Verify backend is running:
+**"Network Error" or CORS errors:**
+
+1. **Verify backend is running:**
    ```bash
    curl http://localhost:8000/health
    ```
 
-2. Check `.env` file has correct `VITE_API_URL`
+2. **Check `.env` file:**
+   ```bash
+   cat .env
+   # Should have: VITE_API_URL=http://localhost:8000
+   ```
 
-3. Check browser console for CORS errors
+3. **Restart dev server after changing `.env`:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Check browser console (F12)** for detailed errors
+
+---
 
 ### Build Errors
 
 ```bash
-# Clean cache
+# Clear Vite cache
 rm -rf node_modules/.vite
 
 # Rebuild
 npm run build
+
+# If still failing, check for:
+# - Syntax errors in Vue components
+# - Missing imports
+# - TypeScript errors (if using TS)
 ```
+
+---
 
 ### Vite Cache Issues
 
@@ -283,213 +479,86 @@ rm -rf node_modules/.vite
 npm run dev
 ```
 
-## 🧪 Testing
+---
 
-### Cypress E2E Testing
+### PrimeVue Components Not Rendering
 
-The project includes Cypress for end-to-end testing against localhost.
-
-[![nurtured-heart-ai](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/jkecp8&style=for-the-badge&logo=cypress)](https://cloud.cypress.io/projects/jkecp8/runs)
-
-#### Prerequisites
-
-1. **Start the application:**
-   ```bash
-   # Start both frontend and backend
-   docker-compose up
-   
-   # Or start individually:
-   npm run dev  # Frontend on http://localhost:5173
-   # Backend should be running on http://localhost:8000
-   ```
-
-2. **Verify services are running:**
-   ```bash
-   # Check frontend
-   curl http://localhost:5173
-   
-   # Check backend
-   curl http://localhost:8000/health
-   ```
-
-#### Running Tests
-
-```bash
-# Run tests in headless mode
-npm run test
-
-# Open Cypress Test Runner (interactive)
-npm run test:open
-
-# Run tests in headed mode (see browser)
-npm run test:headed
-```
-
-#### Test Configuration
-
-- **Base URL:** `http://localhost:5173` (configured in `cypress.config.js`)
-- **Test Files:** `cypress/e2e/**/*.cy.js`
-- **Support Files:** `cypress/support/`
-
-#### Writing Tests
-
-Tests are located in `cypress/e2e/`. Example test structure:
-
+**Check component registration in `main.js`:**
 ```javascript
-describe('Compliment Generator', () => {
-  beforeEach(() => {
-    cy.visit('/')
-  })
-
-  it('should generate a compliment', () => {
-    // Fill form and test generation
-    cy.get('#recipientName').type('John')
-    cy.get('.generate-btn').click()
-    cy.get('.compliment-text').should('be.visible')
-  })
-})
+import Button from 'primevue/button'
+app.component('Button', Button)
 ```
 
-#### Test Commands
-
-Available npm scripts:
-- `npm run test` - Run all tests headlessly
-- `npm run test:open` - Open Cypress Test Runner
-- `npm run test:headed` - Run tests with visible browser
-
-### Manual Testing Checklist
-
-- [ ] Form validation works
-- [ ] Compliment generation succeeds
-- [ ] Copy button works
-- [ ] Toast notifications appear
-- [ ] Responsive on mobile
-- [ ] All routes accessible
-- [ ] Backend connection working
-
-### Test API Connection
-
+**Verify CSS imports:**
 ```javascript
-// In browser console
-fetch('http://localhost:8000/health')
-  .then(r => r.json())
-  .then(console.log)
+import 'primevue/resources/themes/lara-light-blue/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
 ```
+
+---
+
+### Tests Failing
+
+**"baseUrl not reachable":**
+- Ensure frontend is running on http://localhost:5173
+- Check `cypress.config.js` baseUrl matches
+
+**Backend not responding:**
+- Verify backend is running on http://localhost:8000
+- Check backend health: `curl http://localhost:8000/health`
+
+**Timeout errors:**
+- Increase timeout in test: `cy.get('.element', { timeout: 10000 })`
+- Check if backend/LLM is slow to respond
+
+---
 
 ## 🚀 Deployment
 
-### Vercel
+For production deployment, see the [DEPLOYMENT.md](../DEPLOYMENT.md) guide which covers:
+- Vercel, Netlify, GitHub Pages
+- Environment variables for production
+- Build optimization
+- Static hosting with Nginx/Apache
+
+---
+
+## 📦 Build for Production
 
 ```bash
 npm run build
-# Then deploy dist/ folder to Vercel
 ```
 
-Or use Vercel CLI:
+Built files in `dist/` directory.
+
+**Preview production build:**
 ```bash
-npm i -g vercel
-vercel
+npm run preview
 ```
 
-### Netlify
-
-```bash
-npm run build
-# Then deploy dist/ folder to Netlify
-```
-
-Or use Netlify CLI:
-```bash
-npm i -g netlify-cli
-netlify deploy --prod
-```
-
-### GitHub Pages
-
-1. Update `vite.config.js`:
-   ```javascript
-   export default defineConfig({
-     base: '/your-repo-name/',
-     // ...
-   });
-   ```
-
-2. Build and deploy:
-   ```bash
-   npm run build
-   # Push dist/ to gh-pages branch
-   ```
-
-### Nginx (Self-hosted)
-
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com;
-    root /path/to/dist;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
-
-### Environment Variables for Production
-
-Create `.env.production`:
-
-```env
-VITE_API_URL=https://api.yourdomain.com
-```
-
-Build with production env:
-```bash
-npm run build
-```
-
-## 📦 Dependencies
-
-### Main Dependencies
-
-```json
-{
-  "vue": "^3.x",
-  "vue-router": "^4.x",
-  "primevue": "^3.x",
-  "primeicons": "^7.x"
-}
-```
-
-### Dev Dependencies
-
-```json
-{
-  "@vitejs/plugin-vue": "^5.x",
-  "vite": "^5.x"
-}
-```
+---
 
 ## 🎯 Performance Tips
 
-1. **Lazy Load Routes:**
+1. **Lazy load routes:**
    ```javascript
    component: () => import('../views/YourView.vue')
    ```
 
-2. **Optimize Images:**
+2. **Code splitting** - Vite automatically splits code by route
+
+3. **Image optimization:**
    - Use WebP format
    - Compress images before adding
 
-3. **Code Splitting:**
-   - Vite automatically splits code
-   - Keep components modular
+4. **Bundle analysis:**
+   ```bash
+   npm run build -- --mode analyze
+   ```
 
-4. **Production Build:**
-   - Minified and tree-shaken
-   - Optimized for performance
+---
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
-

@@ -20,130 +20,117 @@ This app helps you create meaningful, personalized compliments based on the **Nu
 - 💝 Based on Nurtured Heart Approach principles
 - 🎨 Beautiful, responsive UI with PrimeVue
 - 🌐 Flexible deployment options (local or hosted)
+- 📧 Optional email delivery
 
 ## 🛠️ Tech Stack
 
 **Backend:**
-- Python 3.11+
-- FastAPI
-- AI Services: Ollama (local) or Google Gemini (hosted)
+- Python 3.11+ / FastAPI
+- AI Services: Ollama (local) or Google Gemini (cloud)
 
 **Frontend:**
-- Vue.js 3
-- PrimeVue
-- Vite
+- Vue.js 3 / PrimeVue / Vite
 
-
-## 🤖 AI Service Options
-
-This application supports two AI service configurations that can be used both locally and in production:
-
-### 🦙 Ollama (Local Models)
-- **Best for:** Privacy-focused usage, offline capability, open-source models
-- **Requirements:** Ollama installed locally with LLM models
-- **Models:** llama3.2, mistral, or other Ollama-compatible models
-- **Privacy:** All processing happens on your local machine
-- **Use cases:** Local development, private deployments, offline usage
-
-### 🤖 Google Gemini (Cloud API)
-- **Best for:** Easy setup, powerful models, no local installation needed
-- **Requirements:** Google AI Studio API key (free tier available)
-- **Models:** gemini-pro, gemini-2.5-flash-lite
-- **Privacy:** Data sent to Google's servers (see their privacy policy)
-- **Use cases:** Local development, production deployments, shared hosting
-
-**Both services can be used locally!** The choice depends on your preferences for privacy vs convenience.
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
+Choose one AI service option:
+
 **Option 1: Local Models with Ollama**
-1. **Install Ollama:** https://ollama.ai/download
-   
-   **macOS:**
-   ```bash
-   brew install ollama
-   ```
+```bash
+# Install Ollama
+brew install ollama  # macOS
 
-2. **Pull the LLM Model:**
-   ```bash
-   # Main model (~2GB)
-   ollama serve
-   ollama pull llama3.2
-   
-   ## You can also use other models like:
-   ollama pull mistral # (smaller, faster)
-   ollama pull llama3.2:1b # smallest, for testing
-   ```
+# Pull a model
+ollama serve
+ollama pull llama3.2:1b
+```
 
-**Option 2: Cloud API with Google Gemini (also works locally)**
-1. Get a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/)
-2. No local LLM installation required - works great for local development too!
+**Option 2: Cloud API with Google Gemini**
+- Get API key from [Google AI Studio](https://aistudio.google.com/)
+- No local installation needed - works great for development!
 
 **Common Requirements:**
-3. **Python 3.11+** and **Node.js 18+**
+- Python 3.11+
+- Node.js 18+
+
+---
 
 ### Installation
 
-#### Option 1: Automated Setup (Recommended)
-
-Run the setup script:
+#### Automated Setup (Recommended)
 
 ```bash
 ./setup.sh
 ```
 
-This will:
-- Create environment files
-- Set up Python virtual environment
-- Install backend dependencies
-- Install frontend dependencies
+This creates environment files, installs dependencies, and sets up both backend and frontend.
 
-#### Option 2: Manual Setup
+#### Manual Setup
 
-**Step 1: Create Environment Files**
+**1. Environment Files**
 
-Backend:
-```bash
-cd backend
-cp .env.example .env
+Backend (`backend/.env`):
+```env
+# AI Service: Choose "ollama" or "gemini"
+AI_SERVICE=ollama
+
+# For Ollama (local)
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.2:1b
+
+# For Gemini (cloud) - also works locally!
+# AI_SERVICE=gemini
+# GEMINI_API_KEY=your_api_key_here
+# GEMINI_MODEL=gemini-2.5-flash-lite
+
+# Server settings
+TEMPERATURE=0.7
+HOST=0.0.0.0
+PORT=8000
+CORS_ORIGINS=http://localhost:5173
+
+# Email (optional - leave empty to disable)
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASSWORD=
+FROM_EMAIL=
 ```
 
-Frontend:
-```bash
-cd frontend
-cp .env.example .env
+Frontend (`frontend/.env`):
+```env
+VITE_API_URL=http://localhost:8000
 ```
 
-> 📖 **For detailed environment configuration options, see [ENV_SETUP.md](ENV_SETUP.md)**  
-> This includes SMTP setup for email functionality, production deployment, and more.
+Or copy from examples:
+```bash
+cd backend && cp .env.example .env
+cd ../frontend && cp .env.example .env
+```
 
-**Step 2: Install Backend Dependencies**
+**2. Install Dependencies**
 
 ```bash
+# Backend
 cd backend
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cd ..
-```
 
-**Step 3: Install Frontend Dependencies**
-
-```bash
-cd frontend
+# Frontend
+cd ../frontend
 npm install
-cd ..
 ```
 
 ---
 
-## 🎮 Running the Application
+### Running the Application
 
-### Option 1: Using Helper Scripts
-
-**Terminal 1 - Backend:**
+**Option 1: Using Helper Scripts**
 ```bash
 # Terminal 1
 ./start-backend.sh
@@ -152,52 +139,40 @@ cd ..
 ./start-frontend.sh
 ```
 
-### Option 2: Manual Start
-
-**Terminal 1: Start Ollama (if not already running)**
+**Option 2: Manual Start**
 ```bash
-# Terminal 1 - Ollama (Leave this running in the background)
-ollama serve #
+# Terminal 1 - Ollama (if using local models)
+ollama serve
 
-# Terminal 2 - Backend (http://localhost:8000)
+# Terminal 2 - Backend
 cd backend
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-python main.py 
+source venv/bin/activate
+python main.py
 
-# Terminal 3 - Frontend (http://localhost:5173)
+# Terminal 3 - Frontend
 cd frontend
 npm run dev
 ```
 
-### Option 3: Using Docker
-
+**Option 3: Docker**
 ```bash
 docker-compose up
 ```
 
-### Open Your Browser
+**Open your browser:** http://localhost:5173
 
-Navigate to: **http://localhost:5173**
-
+---
 
 ## 🎯 Usage
 
-### Try It Out!
-
 1. **Enter a name:** e.g., "Jordan"
 2. **Select relationship:** e.g., "student"
-3. **Add qualities:** Click the + button after typing each quality
-   - "creative"
-   - "persistent"
-   - "thoughtful"
+3. **Add qualities:** "creative", "persistent", "thoughtful"
 4. **Add context:** "completed a challenging art project"
 5. **Choose tone:** warm, enthusiastic, calm, professional
-6. **Click "Generate Compliment"**
-7. Copy or share the compliment!
+6. **Generate Compliment** and copy or share!
 
-You should see a personalized compliment generated by the AI!
-
-### Test API Directly
+### Test the API
 
 ```bash
 curl -X POST http://localhost:8000/api/generate \
@@ -211,106 +186,33 @@ curl -X POST http://localhost:8000/api/generate \
   }'
 ```
 
----
-
-## 📚 API Documentation
-
-Once the backend is running, explore the auto-generated API docs:
-- **Swagger UI:** http://localhost:8000/docs
-- **ReDoc:** http://localhost:8000/redoc
-
-### Check Backend Health
-
-```bash
-curl http://localhost:8000/health
-```
-
----
-
-## ⚙️ Configuration
-
-For detailed configuration options, see:
-- **[Backend Configuration](backend/README.md)** - Server settings, Ollama models, email setup
-- **[Frontend Configuration](frontend/README.md)** - API URL, deployment settings
-
-### Quick Configuration
-
-**Backend** (`backend/.env`):
-
-**Option 1: Local Models (Ollama)**
-```env
-AI_SERVICE=ollama
-OLLAMA_HOST=http://localhost:11434
-OLLAMA_MODEL=llama3.2:1b
-TEMPERATURE=0.7
-```
-
-**Option 2: Cloud API (Google Gemini) - works locally too!**
-```env
-AI_SERVICE=gemini
-GEMINI_API_KEY=your_api_key_here
-GEMINI_MODEL=gemini-2.5-flash-lite
-TEMPERATURE=0.7
-```
-
-**Frontend** (`frontend/.env`):
-```env
-VITE_API_URL=http://localhost:8000  # Local development
-# VITE_API_URL=https://your-backend-url.com  # Production
-```
+**API Documentation:** http://localhost:8000/docs
 
 ---
 
 ## 🧪 Testing
 
-The project includes Cypress for end-to-end testing.
+### End-to-End Tests with Cypress
 
-### Running Tests
+```bash
+# Start the application first
+docker-compose up
+# Or start frontend and backend separately
 
-1. **Start the application:**
-   ```bash
-   # Start both services
-   docker-compose up
-   
-   # Or start individually:
-   cd frontend && npm run dev  # Frontend on http://localhost:5173
-   cd backend && python main.py  # Backend on http://localhost:8000
-   ```
+# Run tests
+cd frontend
+npm run test              # Headless
+npm run test:open         # Interactive
+npm run test:headed       # Headed mode
+```
 
-2. **Run Cypress tests:**
-   ```bash
-   cd frontend
-   
-   # Interactive test runner
-   npm run test:open
-   
-   # Headless test run
-   npm run test
-   
-   # Headed test run (see browser)
-   npm run test:headed
-   ```
-
-### Test Configuration
-
-- **Frontend:** http://localhost:5173
-- **Backend:** http://localhost:8000
-- **Test Files:** `frontend/cypress/e2e/**/*.cy.js`
-
-For detailed testing documentation, see [Frontend Testing Guide](frontend/README.md#-testing).
+See [Frontend Testing Guide](frontend/README.md#-testing) for details.
 
 ---
 
 ## 🛠️ Development
 
 Both frontend and backend support hot reload for rapid development.
-
-For detailed development guides:
-- **[Backend Development](backend/README.md#-development)** - API customization, prompts, testing
-- **[Frontend Development](frontend/README.md#-development)** - Components, routing, styling
-- **[Linting Guide](LINTING.md)** - Code quality and style enforcement
-
-### Quick Start Development
 
 **Backend:**
 ```bash
@@ -327,21 +229,19 @@ npm run dev
 
 ### Code Quality
 
-This project uses linters to maintain code quality:
-
 **Backend (Python):**
 ```bash
 cd backend
 ruff check .          # Check for issues
-ruff check --fix .    # Auto-fix issues
+ruff check --fix .    # Auto-fix
 ruff format .         # Format code
 ```
 
 **Frontend (JavaScript/Vue):**
 ```bash
 cd frontend
-npm run lint          # Check for issues
-npm run lint:fix      # Auto-fix issues
+npm run lint          # Check
+npm run lint:fix      # Auto-fix
 ```
 
 See **[LINTING.md](LINTING.md)** for complete linting documentation.
@@ -350,54 +250,64 @@ See **[LINTING.md](LINTING.md)** for complete linting documentation.
 
 ## 🐛 Troubleshooting
 
-### Common Issues
-
-**LLM Not Ready:**
-```bash
-# Check Ollama is running
-curl http://localhost:11434/api/tags
-
-# Pull model if missing
-ollama pull llama3.2
-```
-
-**Backend Not Connecting:**
+### Backend Not Connecting
 ```bash
 # Check backend health
 curl http://localhost:8000/health
+
+# If using Ollama, verify it's running
+curl http://localhost:11434/api/tags
+
+# Pull model if missing
+ollama pull llama3.2:1b
 ```
 
-**Frontend Not Loading:**
+### Frontend Not Loading
 ```bash
 # Check for port conflicts
 lsof -i :5173
 
 # Try different port
 npm run dev -- --port 3000
+
+# Verify backend URL in frontend/.env
+cat frontend/.env
 ```
 
-For detailed troubleshooting:
-- **[Backend Troubleshooting](backend/README.md#-troubleshooting)**
-- **[Frontend Troubleshooting](frontend/README.md#-troubleshooting)**
+### Port Already in Use
+```bash
+# Find process
+lsof -i :8000
+
+# Kill it (replace PID)
+kill -9 <PID>
+```
+
+For detailed troubleshooting, see:
+- [Backend Troubleshooting](backend/README.md#-troubleshooting)
+- [Frontend Troubleshooting](frontend/README.md#-troubleshooting)
 
 ---
 
 ## 🚀 Deployment
 
-For detailed deployment guides:
-- **[Backend Deployment](backend/README.md#-deployment)** - Railway, Render, AWS, Docker
-- **[Frontend Deployment](frontend/README.md#-deployment)** - Vercel, Netlify, GitHub Pages
+### Quick Deployment Overview
 
-### Quick Deployment Options
+**Backend Options:**
+- **Vercel/Railway/Render** (serverless with Google Gemini)
+- **Docker on VM** (self-hosted with Ollama)
 
-**Backend:**
-- **Recommended:** Vercel/Railway/Render (Python + Google Gemini)
-- **Alternative:** AWS/GCP/Azure (VM with Docker + Ollama)
-- **Configuration:** Both Ollama and Gemini work great for local development and production deployment
+**Frontend Options:**
+- **Vercel/Netlify** (recommended)
+- **GitHub Pages** (static hosting)
+- **Self-hosted** (Nginx/Apache)
 
-**Frontend:**
-- Vercel/Netlify (Static hosting)
-- Build: `npm run build` → Deploy `dist/` folder
+**See the complete [DEPLOYMENT.md](DEPLOYMENT.md) guide** for:
+- Platform-specific instructions
+- Environment variable setup
+- Production configurations
+- Security best practices
+- Monitoring and troubleshooting
 
 ---
 
@@ -413,6 +323,16 @@ The Nurtured Heart Approach focuses on recognizing and celebrating inner greatne
 
 ---
 
+## 📚 Documentation
+
+- **[Deployment Guide](DEPLOYMENT.md)** - Production deployment for all platforms
+- **[Backend Documentation](backend/README.md)** - API reference, code structure, development
+- **[Frontend Documentation](frontend/README.md)** - Components, architecture, development
+- **[Linting Guide](LINTING.md)** - Code quality and style enforcement
+- **[API Docs](http://localhost:8000/docs)** - Interactive API documentation (when running)
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -420,32 +340,25 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### What does this mean?
 
 ✅ **You can:**
-- Use this project commercially
-- Modify and distribute it
-- Use it privately
-- Sublicense it
+- Use commercially
+- Modify and distribute
+- Use privately
+- Sublicense
 
 ❗ **You must:**
-- Include the original copyright notice and license
+- Include the original copyright and license
 
 🚫 **This software comes with:**
 - NO warranty or liability
 
 ---
 
-## 📚 Documentation
-
-- **[Backend Documentation](backend/README.md)** - API, configuration, models, email setup
-- **[Frontend Documentation](frontend/README.md)** - Components, routing, styling, deployment
-- **[Linting Documentation](LINTING.md)** - Code quality, style guides, linter setup
-- **[API Docs](http://localhost:8000/docs)** - Interactive API documentation (when running)
-
 ## 🙋 Need Help?
 
-- Backend logs: Terminal where backend is running
-- Frontend errors: Browser console (F12)
-- API documentation: http://localhost:8000/docs
-- Configuration: Check `.env` files in backend/ and frontend/
+- **Backend logs:** Terminal where backend is running
+- **Frontend errors:** Browser console (F12)
+- **API documentation:** http://localhost:8000/docs
+- **Configuration:** Check `.env` files in `backend/` and `frontend/`
 
 ---
 

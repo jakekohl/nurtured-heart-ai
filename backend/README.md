@@ -1,141 +1,71 @@
 # Backend - Nurtured Heart Compliment Generator
 
-FastAPI backend service for generating Nurtured Heart compliments using Ollama (local LLM).
+FastAPI backend service for generating Nurtured Heart compliments using AI (Ollama or Google Gemini).
 
 ## 🛠️ Tech Stack
 
 - **Python 3.11+**
-- **FastAPI** - Modern web framework
+- **FastAPI** - Modern async web framework
 - **Ollama** - Local LLM interface
+- **Google Generative AI** - Cloud LLM API
 - **Pydantic** - Data validation
-- **SMTP** - Email sending (optional)
+- **aiosmtplib** - Async email sending
 
-## 📋 Requirements
+---
 
-- Python 3.11 or higher
-- Ollama installed and running
-- At least one LLM model pulled (e.g., `llama3.2`)
+## 📁 Project Structure
 
-## 🚀 Setup
-
-### 1. Create Virtual Environment
-
-```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+backend/
+├── main.py              # FastAPI app, endpoints, CORS
+├── models.py            # Pydantic request/response models
+├── prompts.py           # LLM prompt templates
+├── llm_service.py       # AI service abstraction (Ollama/Gemini)
+├── email_service.py     # Email functionality
+├── requirements.txt     # Python dependencies
+├── pyproject.toml       # Ruff linter configuration
+├── vercel.json          # Vercel deployment config
+├── Dockerfile           # Docker configuration
+└── .env                 # Environment variables (create from .env.example)
 ```
 
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Create Environment File
-
-Create a `.env` file in the `backend/` directory:
-
-```bash
-cat > .env << 'EOF'
-# Server Settings
-HOST=0.0.0.0
-PORT=8000
-CORS_ORIGINS=http://localhost:5173
-
-# AI Service Configuration
-AI_SERVICE=ollama
-OLLAMA_HOST=http://localhost:11434
-OLLAMA_MODEL=llama3.2:1b
-TEMPERATURE=0.7
-
-# Email Configuration (Optional)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
-FROM_EMAIL=your-email@gmail.com
-EOF
-```
-
-## ⚙️ Configuration Options
-
-### Server Settings
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `HOST` | `0.0.0.0` | Server host address |
-| `PORT` | `8000` | Server port |
-| `CORS_ORIGINS` | `http://localhost:5173` | Allowed CORS origins (comma-separated) |
-
-### Ollama Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `AI_SERVICE` | `ollama` | AI service to use: `ollama` or `gemini` |
-| `OLLAMA_HOST` | `http://localhost:11434` | Ollama server URL |
-| `OLLAMA_MODEL` | `llama3.2:1b` | Ollama model to use |
-| `TEMPERATURE` | `0.7` | LLM temperature (0.0-1.0, higher = more creative) |
-
-### Email Configuration (Optional)
-
-| Variable | Description |
-|----------|-------------|
-| `SMTP_HOST` | SMTP server hostname |
-| `SMTP_PORT` | SMTP server port (587 for TLS) |
-| `SMTP_USER` | SMTP username/email |
-| `SMTP_PASSWORD` | SMTP password or app password |
-| `FROM_EMAIL` | Email address for "From" field |
-
-## 🎮 Running the Server
-
-### Development Mode (with auto-reload)
-
-```bash
-source venv/bin/activate
-uvicorn main:app --reload
-```
-
-### Production Mode
-
-```bash
-source venv/bin/activate
-python main.py
-```
-
-### Using Helper Script
-
-```bash
-cd ..  # Go to project root
-./start-backend.sh
-```
-
-Server will run at: **http://localhost:8000**
-
-## 📚 API Documentation
-
-Once running, access the interactive API documentation:
-
-- **Swagger UI:** http://localhost:8000/docs
-- **ReDoc:** http://localhost:8000/redoc
+---
 
 ## 🔌 API Endpoints
 
 ### Health Check
 
+**`GET /health`**
+
+Returns server status and AI service availability.
+
 ```bash
-GET /health
+curl http://localhost:8000/health
 ```
 
-Returns server and Ollama status.
+**Response:**
+```json
+{
+  "api": "healthy",
+  "llm": {
+    "service": "ollama",
+    "available": true,
+    "installed_models": ["llama3.2:1b", "mistral:latest"],
+    "required_model": "llama3.2:1b"
+  },
+  "email_service": false
+}
+```
+
+---
 
 ### Generate Compliment
 
-```bash
-POST /api/generate
-```
+**`POST /api/generate`**
 
-**Request Body:**
+Generates a Nurtured Heart compliment.
+
+**Request:**
 ```json
 {
   "recipient_name": "Emma",
@@ -149,195 +79,15 @@ POST /api/generate
 **Response:**
 ```json
 {
-  "compliment": "Emma, I see such creativity and persistence...",
-  "recipient_name": "Emma"
+  "success": true,
+  "data": {
+    "compliment": "Emma, I see such creativity and persistence...",
+    "generated_at": "2024-10-16T10:30:00.000Z"
+  }
 }
 ```
 
-### Send Email
-
-```bash
-POST /api/send-email
-```
-
-**Request Body:**
-```json
-{
-  "to_email": "recipient@example.com",
-  "compliment": "Your compliment text here",
-  "recipient_name": "Emma"
-}
-```
-
-## 🤖 LLM Models
-
-### Recommended Models
-
-| Model | Size | Speed | Quality | Use Case |
-|-------|------|-------|---------|----------|
-| `llama3.2:latest` | ~2GB | Medium | High | Production |
-| `llama3.2:1b` | ~1GB | Fast | Medium | Testing/Development |
-| `mistral:latest` | ~4GB | Medium | High | Alternative option |
-| `phi3:latest` | ~2GB | Fast | Good | Smaller deployments |
-
-### Pull a Model
-
-```bash
-ollama pull llama3.2
-ollama pull mistral
-ollama pull phi3
-```
-
-### Switch Models
-
-1. Pull the desired model
-2. Update `.env`:
-   ```env
-   OLLAMA_MODEL=mistral:latest
-   ```
-3. Restart the server
-
-### Model Parameters
-
-**Temperature** (`0.0` - `1.0`):
-- `0.0-0.3`: Focused, consistent, predictable
-- `0.4-0.7`: Balanced (recommended)
-- `0.8-1.0`: Creative, varied, unpredictable
-
-## 📧 Email Setup (Optional)
-
-### Gmail Setup
-
-1. **Enable 2-Factor Authentication** in your Google Account
-2. **Generate App Password:**
-   - Go to: https://myaccount.google.com/security
-   - Security → 2-Step Verification → App passwords
-   - Generate new password for "Mail"
-3. **Update `.env`:**
-   ```env
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=youremail@gmail.com
-   SMTP_PASSWORD=your-16-char-app-password
-   FROM_EMAIL=youremail@gmail.com
-   ```
-4. **Restart the server**
-
-### Other Email Providers
-
-**Outlook/Office 365:**
-```env
-SMTP_HOST=smtp.office365.com
-SMTP_PORT=587
-```
-
-**Yahoo:**
-```env
-SMTP_HOST=smtp.mail.yahoo.com
-SMTP_PORT=587
-```
-
-**Custom SMTP:**
-```env
-SMTP_HOST=your-smtp-server.com
-SMTP_PORT=587  # or 465 for SSL
-```
-
-## 🛠️ Development
-
-### Project Structure
-
-```
-backend/
-├── main.py           # FastAPI app & endpoints
-├── models.py         # Pydantic models
-├── prompts.py        # LLM prompt templates
-├── llm_service.py    # Ollama integration
-├── email_service.py  # Email functionality
-├── requirements.txt  # Python dependencies
-├── .env             # Configuration (create this)
-└── Dockerfile       # Docker configuration
-```
-
-### Customize Prompts
-
-Edit `prompts.py` to modify how compliments are generated:
-
-```python
-def get_compliment_prompt(data: ComplimentRequest) -> str:
-    # Your custom prompt logic
-    return prompt
-```
-
-### Add New Endpoints
-
-In `main.py`:
-
-```python
-@app.post("/api/your-endpoint")
-async def your_endpoint():
-    # Your logic here
-    pass
-```
-
-## 🐛 Troubleshooting
-
-### Ollama Not Ready
-
-```bash
-# Check if Ollama is running
-curl http://localhost:11434/api/tags
-
-# Start Ollama
-ollama serve
-
-# Verify model is installed
-ollama list
-```
-
-### Import Errors
-
-```bash
-# Ensure virtual environment is activated
-source venv/bin/activate
-
-# Reinstall dependencies
-pip install -r requirements.txt
-```
-
-### Port Already in Use
-
-```bash
-# Find process on port 8000
-lsof -i :8000
-
-# Kill it (replace PID)
-kill -9 <PID>
-
-# Or use a different port in .env
-PORT=8001
-```
-
-### Email Not Sending
-
-1. Check SMTP credentials in `.env`
-2. Verify app password (not regular password)
-3. Check firewall/network settings
-4. Test SMTP connection:
-   ```bash
-   python -c "import smtplib; smtplib.SMTP('smtp.gmail.com', 587).starttls()"
-   ```
-
-## 🧪 Testing
-
-### Health Check
-
-```bash
-curl http://localhost:8000/health
-```
-
-### Generate Compliment
-
+**cURL Example:**
 ```bash
 curl -X POST http://localhost:8000/api/generate \
   -H "Content-Type: application/json" \
@@ -350,45 +100,380 @@ curl -X POST http://localhost:8000/api/generate \
   }'
 ```
 
+---
+
 ### Send Email
 
+**`POST /api/send-email`**
+
+Sends a compliment via email (if SMTP configured).
+
+**Request:**
+```json
+{
+  "recipient_email": "user@example.com",
+  "recipient_name": "Emma",
+  "sender_name": "Mr. Smith",
+  "compliment": "Your personalized compliment text here"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Compliment sent to user@example.com"
+}
+```
+
+---
+
+### List Models
+
+**`GET /api/models`**
+
+Returns available AI models (Ollama only).
+
+```bash
+curl http://localhost:8000/api/models
+```
+
+---
+
+## 📚 Interactive API Documentation
+
+FastAPI auto-generates interactive docs:
+
+- **Swagger UI:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
+
+These allow you to test endpoints directly in the browser!
+
+---
+
+## 🤖 AI Service Configuration
+
+The backend supports two AI services via the `AI_SERVICE` environment variable.
+
+### Ollama (Local Models)
+
+**Best for:** Privacy, offline, self-hosted
+
+**Environment variables:**
+```env
+AI_SERVICE=ollama
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.2:1b
+TEMPERATURE=0.7
+```
+
+**Recommended models:**
+
+| Model | Size | Speed | Quality | Use Case |
+|-------|------|-------|---------|----------|
+| `llama3.2:1b` | ~1GB | Fast | Good | Development/testing |
+| `llama3.2:latest` | ~2GB | Medium | High | Production |
+| `mistral:latest` | ~4GB | Medium | High | Alternative |
+| `phi3:latest` | ~2GB | Fast | Good | Smaller deployments |
+
+**Pull models:**
+```bash
+ollama pull llama3.2
+ollama pull mistral
+ollama pull phi3
+```
+
+**Switch models:** Update `OLLAMA_MODEL` in `.env` and restart server.
+
+---
+
+### Google Gemini (Cloud API)
+
+**Best for:** Easy deployment, powerful models, serverless
+
+**Environment variables:**
+```env
+AI_SERVICE=gemini
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.5-flash-lite
+TEMPERATURE=0.7
+```
+
+**Get API key:** [Google AI Studio](https://aistudio.google.com/)
+
+**Available models:**
+- `gemini-2.5-flash-lite` - Fast, efficient (recommended)
+- `gemini-pro` - More powerful, slower
+
+---
+
+### Temperature Settings
+
+Controls randomness/creativity in responses:
+
+- `0.0-0.3`: Focused, consistent, predictable
+- `0.4-0.7`: Balanced (recommended: **0.7**)
+- `0.8-1.0`: Creative, varied, less predictable
+
+---
+
+## 🛠️ Development
+
+### Running the Server
+
+**Development mode (auto-reload):**
+```bash
+cd backend
+source venv/bin/activate  # Windows: venv\Scripts\activate
+uvicorn main:app --reload
+```
+
+**Production mode:**
+```bash
+python main.py
+```
+
+Server runs at: http://localhost:8000
+
+---
+
+### Customizing Prompts
+
+Edit `prompts.py` to modify how compliments are generated:
+
+```python
+def create_nurtured_heart_prompt(
+    recipient_name: str,
+    relationship: str,
+    qualities: list[str],
+    context: Optional[str] = None,
+    tone: str = "warm"
+) -> str:
+    """
+    Customize the prompt template here.
+    """
+    # Your custom logic
+    return prompt_text
+```
+
+**Tips:**
+- Add more context about Nurtured Heart principles
+- Adjust tone variations
+- Include examples for few-shot learning
+- Experiment with different prompt structures
+
+---
+
+### Adding New Endpoints
+
+In `main.py`:
+
+```python
+@app.post("/api/your-endpoint")
+async def your_endpoint(request: YourRequestModel):
+    """Your endpoint logic."""
+    try:
+        result = await your_service.do_something(request)
+        return {"success": True, "data": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+Define models in `models.py`:
+
+```python
+class YourRequestModel(BaseModel):
+    field1: str
+    field2: Optional[int] = None
+```
+
+---
+
+### Code Quality
+
+**Linting with Ruff:**
+```bash
+# Check for issues
+ruff check .
+
+# Auto-fix issues
+ruff check --fix .
+
+# Format code
+ruff format .
+
+# Or use the script
+./lint.sh
+```
+
+**Configuration:** `pyproject.toml`
+- Line length: 100 characters
+- Indentation: 2 spaces
+- Rules: pycodestyle, pyflakes, isort, pep8-naming
+
+See [LINTING.md](../LINTING.md) for details.
+
+---
+
+## 🧪 Testing
+
+### Manual Testing
+
+**Health check:**
+```bash
+curl http://localhost:8000/health
+```
+
+**Generate compliment:**
+```bash
+curl -X POST http://localhost:8000/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_name": "Test",
+    "relationship": "friend",
+    "qualities": ["kind"],
+    "context": "helping out",
+    "tone": "warm"
+  }'
+```
+
+**Test email (if configured):**
 ```bash
 curl -X POST http://localhost:8000/api/send-email \
   -H "Content-Type: application/json" \
   -d '{
-    "to_email": "recipient@example.com",
-    "compliment": "Your personalized compliment here",
-    "recipient_name": "Jordan"
+    "recipient_email": "test@example.com",
+    "recipient_name": "Test",
+    "sender_name": "Your Name",
+    "compliment": "Test compliment"
   }'
 ```
 
-## 🚀 Deployment
+---
 
-### Using Docker
+### End-to-End Testing
+
+The project includes Cypress tests in the frontend that test the full stack.
+
+See [Frontend Testing Guide](../frontend/README.md#-testing).
+
+---
+
+## 🐛 Troubleshooting
+
+### Ollama Not Available
+
+**Check if Ollama is running:**
+```bash
+curl http://localhost:11434/api/tags
+```
+
+**Start Ollama:**
+```bash
+ollama serve
+```
+
+**Verify model is installed:**
+```bash
+ollama list
+```
+
+**Pull model:**
+```bash
+ollama pull llama3.2:1b
+```
+
+---
+
+### Gemini API Errors
+
+**"GEMINI_API_KEY environment variable is required"**
+- Ensure `GEMINI_API_KEY` is set in `.env`
+- Restart the server after setting it
+
+**"Invalid API key"**
+- Verify key is correct in [Google AI Studio](https://aistudio.google.com/)
+- Check for extra spaces in `.env` file
+
+**Rate limit errors:**
+- Free tier: 15 requests/minute, 1500/day
+- Monitor usage in Google AI Studio
+- Consider upgrading plan if needed
+
+---
+
+### Import Errors
+
+**"Module not found"**
+```bash
+# Ensure virtual environment is activated
+source venv/bin/activate
+
+# Reinstall dependencies
+pip install -r requirements.txt
+```
+
+---
+
+### Port Already in Use
 
 ```bash
-docker build -t nurtured-heart-backend .
-docker run -p 8000:8000 --env-file .env nurtured-heart-backend
+# Find process on port 8000
+lsof -i :8000
+
+# Kill it (replace PID)
+kill -9 <PID>
+
+# Or use different port
+PORT=8001 python main.py
 ```
 
-### Environment Variables for Production
+---
 
+### CORS Errors
+
+**Update `CORS_ORIGINS` in `.env`:**
 ```env
-HOST=0.0.0.0
-PORT=8000
-CORS_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
-OLLAMA_HOST=http://ollama-service:11434
+CORS_ORIGINS=http://localhost:5173,http://localhost:3000
 ```
 
-### Deployment Platforms
+For production, set to your frontend URL:
+```env
+CORS_ORIGINS=https://yourdomain.com
+```
 
-- **Railway:** Deploy with Dockerfile
-- **Render:** Python app with Ollama
-- **Fly.io:** Docker deployment
-- **AWS/GCP/Azure:** VM with Ollama installed
-- **Self-hosted:** Any server with Docker
+---
+
+### Email Not Sending
+
+**Check configuration:**
+```bash
+# Verify all SMTP variables are set
+grep SMTP .env
+```
+
+**For Gmail:**
+- Use App Password, not regular password
+- Enable 2-Factor Authentication first
+- Generate at: https://myaccount.google.com/security
+
+**Test SMTP connection:**
+```bash
+python -c "import smtplib; smtplib.SMTP('smtp.gmail.com', 587).starttls(); print('OK')"
+```
+
+---
+
+## 🚀 Deployment
+
+For production deployment, see the [DEPLOYMENT.md](../DEPLOYMENT.md) guide which covers:
+- Vercel, Railway, Render (serverless)
+- Docker + VM (self-hosted)
+- Environment variables for production
+- Monitoring and troubleshooting
+
+---
 
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
-
