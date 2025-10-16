@@ -1,4 +1,6 @@
 import os
+import tomllib
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -11,10 +13,23 @@ from models import ComplimentRequest, EmailRequest
 # Load environment variables
 load_dotenv()
 
+# Read version from pyproject.toml
+def get_version() -> str:
+  """Read version from pyproject.toml."""
+  try:
+    pyproject_path = Path(__file__).parent / "pyproject.toml"
+    with open(pyproject_path, "rb") as f:
+      pyproject_data = tomllib.load(f)
+    return pyproject_data.get("project", {}).get("version", "unknown")
+  except Exception:
+    return "unknown"
+
+VERSION = get_version()
+
 app = FastAPI(
     title="Nurtured Heart Compliment Generator API",
     description="Generate heartfelt compliments using AI and the Nurtured Heart Approach",
-    version="1.0.0"
+    version=VERSION
 )
 
 # CORS configuration
@@ -31,7 +46,7 @@ app.add_middleware(
 async def root():
     return {
         "message": "Nurtured Heart Compliment Generator API",
-        "version": "1.0.0",
+        "version": VERSION,
         "docs": "/docs"
     }
 
@@ -43,6 +58,7 @@ async def health_check():
 
     return {
         "api": "healthy",
+        "version": VERSION,
         "llm": model_status,
         "email_service": email_config
     }

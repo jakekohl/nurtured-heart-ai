@@ -1,9 +1,9 @@
 ## Vercel
 .vercel
 
-## Cypress
-frontend/cypress/screenshots
-frontend/cypress/videos
+## Cypress - Ignore screenshots and videos directories
+/frontend/cypress/screenshots/
+/frontend/cypress/videos/
 
 ## Ruff
 .ruff_cache
