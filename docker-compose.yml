@@ -4,10 +4,23 @@ services:
     ports:
       - "8000:8000"
     environment:
+      # AI Service Configuration
       - AI_SERVICE=ollama
       - OLLAMA_HOST=http://ollama:11434
       - OLLAMA_MODEL=llama3.2:1b
+      - TEMPERATURE=0.7
+      # For production with Gemini, uncomment and set:
+      # - AI_SERVICE=gemini
+      # - GEMINI_API_KEY=your_api_key_here
+      # - GEMINI_MODEL=gemini-pro
+      # CORS Configuration
       - CORS_ORIGINS=http://localhost:5173
+      # Email Service (optional - leave empty to disable)
+      - SMTP_HOST=
+      - SMTP_PORT=587
+      - SMTP_USER=
+      - SMTP_PASSWORD=
+      - FROM_EMAIL=
     depends_on:
       ollama:
         condition: service_healthy
@@ -19,6 +32,8 @@ services:
     build: ./frontend
     ports:
       - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules

@@ -26,6 +26,9 @@ dist/
 .env.prd
 *.env.prd
 
+# Docker
+docker-compose.override.yml
+
 # IDE
 .vscode/
 .idea/

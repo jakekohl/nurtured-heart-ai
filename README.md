@@ -159,6 +159,14 @@ npm run dev
 docker-compose up
 ```
 
+> 💡 **Local Docker Customization:** For personal Docker settings (email credentials, different AI models, etc.), create a `docker-compose.override.yml` file:
+> ```bash
+> cp docker-compose.override.yml.example docker-compose.override.yml
+> # Edit docker-compose.override.yml with your settings
+> docker-compose up  # Automatically merges both files
+> ```
+> Your override file won't be committed to git, so you can safely add credentials and personal preferences.
+
 **Open your browser:** http://localhost:5173
 
 ---

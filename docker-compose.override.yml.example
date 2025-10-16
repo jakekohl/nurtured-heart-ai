@@ -1,0 +1,67 @@
+# Docker Compose Override Example
+# 
+# This file provides an example of how to override the default docker-compose.yml
+# settings for your local development environment.
+#
+# USAGE:
+# 1. Copy this file: cp docker-compose.override.yml.example docker-compose.override.yml
+# 2. Customize the values in docker-compose.override.yml
+# 3. Run docker-compose up (it automatically merges both files)
+#
+# NOTE: docker-compose.override.yml is gitignored, so your personal settings won't
+# be committed to version control.
+
+services:
+  backend:
+    environment:
+      # ==========================================
+      # AI Service Configuration
+      # ==========================================
+      # Option 1: Use Ollama (default in docker-compose.yml)
+      - AI_SERVICE=ollama
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=llama3.2:1b
+      
+      # Option 2: Use Google Gemini (uncomment to use)
+      # - AI_SERVICE=gemini
+      # - GEMINI_API_KEY=your_actual_api_key_here
+      # - GEMINI_MODEL=gemini-pro
+      
+      # Model temperature (0.0-1.0, higher = more creative)
+      - TEMPERATURE=0.7
+      
+      # ==========================================
+      # Email Configuration (Optional)
+      # ==========================================
+      # Uncomment and fill in to enable email sending
+      # - SMTP_HOST=smtp.gmail.com
+      # - SMTP_PORT=587
+      # - SMTP_USER=your-email@gmail.com
+      # - SMTP_PASSWORD=your-app-password
+      # - FROM_EMAIL=noreply@yourdomain.com
+      
+      # ==========================================
+      # CORS Configuration
+      # ==========================================
+      # Add your custom frontend URLs (comma-separated)
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+
+  frontend:
+    environment:
+      # Point to your backend API
+      # For Docker: http://backend:8000
+      # For local dev: http://localhost:8000
+      - VITE_API_URL=http://localhost:8000
+    
+    # Uncomment to use a different port locally
+    # ports:
+    #   - "3000:5173"
+
+  # ==========================================
+  # Ollama Service Overrides
+  # ==========================================
+  # Uncomment if you want to use a different model or configuration
+  # ollama:
+  #   environment:
+  #     - OLLAMA_MODELS=llama3.2:1b,mistral:7b
+
