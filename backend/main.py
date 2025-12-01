@@ -52,7 +52,17 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """Check API and LLM health."""
+    """Check the health of the API and LLM model.
+
+    Returns:
+
+        {
+            "api": string containing the API status,
+            "version": string containing the API version,
+            "llm": dictionary containing the LLM model configuration,
+            "email_service": dictionary containing the email service configuration,
+        }
+    """
     model_status = await llm_service.check_model_availability()
     email_config = email_service.get_config()
 
@@ -65,7 +75,27 @@ async def health_check():
 
 @app.post("/api/generate", response_model=dict)
 async def generate_compliment(request: ComplimentRequest):
-    """Generate a nurtured heart compliment."""
+    """Generate a nurtured heart compliment.
+    
+    Args:
+
+        {
+            "recipient_name": string containing the recipient name,
+            "relationship": string containing the relationship,
+            "qualities": list of strings containing the qualities,
+            "context": string containing the context,
+            "tone": string containing the tone,
+        }
+
+    Returns:
+        
+        {
+            "success": boolean containing the success status,
+            "data": dictionary containing the generated compliment,
+                "compliment": string containing the generated compliment,
+                "generated_at": string containing the generated at timestamp,
+        }
+    """
     try:
         result = await llm_service.generate_compliment(request)
         return {
@@ -77,7 +107,24 @@ async def generate_compliment(request: ComplimentRequest):
 
 @app.post("/api/send-email")
 async def send_compliment_email(request: EmailRequest):
-    """Send a compliment via email."""
+    """Send a compliment via email.
+    
+    Args:
+
+        {
+            "recipient_email": string containing the recipient email,
+            "recipient_name": string containing the recipient name,
+            "sender_name": string containing the sender name,
+            "compliment": string containing the compliment,
+        }
+
+    Returns:
+
+        {
+            "success": boolean containing the success status,
+            "message": string containing the email sent,
+        }
+    """
     try:
         result = await email_service.send_compliment(request)
         return result
@@ -86,7 +133,17 @@ async def send_compliment_email(request: EmailRequest):
 
 @app.get("/api/models")
 async def list_models():
-    """List available LLM models."""
+    """List available LLM models.
+    
+    Returns:
+
+        {
+            "service": string containing the LLM service,
+            "available": boolean containing whether the LLM model is available,
+            "installed_models": list of strings containing the installed LLM models,
+            "required_model": string containing the required LLM model,
+        }
+    """
     return await llm_service.check_model_availability()
 
 if __name__ == "__main__":
