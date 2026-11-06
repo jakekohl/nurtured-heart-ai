@@ -42,10 +42,7 @@ jobs:
       - name: Run Cypress tests with recording
         working-directory: ./frontend
         run: |
-          npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          CYPRESS_PROJECT_ID: jkecp8
+          npx cypress run
           
       - name: Stop services
         if: always()
